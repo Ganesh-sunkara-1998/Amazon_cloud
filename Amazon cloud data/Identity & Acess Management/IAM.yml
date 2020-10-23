@@ -1,0 +1,172 @@
+#######################################################............ IAM (Identity and Access Management)..........#######################################################################
+
+IAM (Identity And Access Management):       # Global service
+
+          --> IAM enables you to securely control access to aws services and resources for users of your AWS account.
+          --> You use IAM to control who is authenticated (signed in) and authorized (has permissions) to use resources.
+          --> Using IAM you can create and manage AWS users and groups and assign permission to them to allow and deny their access to AWS resouces.
+      
+Manage users:
+    --> You can create users in IAM assign them individual security credentials in other words,acces keys,passwords,and multi-factor authentication devices.
+    --> Permissions are managed by creating IAM policy statement.
+
+IAM Features:
+        . Shared Access to your Account.
+        . Granular Permissions.
+        . Secure Access to AWS resources. 
+        . Identity Federation.
+        . Identity Information for assurance.
+        . PCI DSS compilance.
+        . Password policy.
+        . Multi factor Authentication.
+
+    Shared access to your AWS account:
+           . You can grant other people to access and use resources in your AWS account without sharing your password.
+    Granular permissions:
+           . You can grant different permissions to different people for different resources.
+    Secure access:
+           . You can securely allocate credentials that applications are running on EC2 instance require to access AWS resources.
+           . We can give access to programmatic way. 
+           . we can use for some Application kind of senarios.
+           . we can able to access one service to another service securly but by default we don't have a permissions to access.
+    Identity information:
+           . Logs,monitor, and track what users are doing with your AWS resources.
+           . we can able manage and Access your services some other third party resources.
+           . We can enable AWS cloud trail in your aws account. we can monitor each and every IAM user activites.
+    Multi-factor authentication (MFA):
+           . You can add two-factor authentication to your account and to individual users for extra security.
+           . With MFA you or your users must provide not only a password or access key to work with your account, but also a code from a specially configured device.
+           . If you want to Enable multi factor Authentication for entire root accout.
+
+Create New user to manage through console way:
+   # IAM dashboard >> users >> ADD user >> Give username >> select AWS access type (AWS console) >> Password type >> Permissions >> Select type of permissions >> once your user created you will get one .csv file >> You got IAM user link >> 
+
+    AWS Access:
+        --> We can able to Access mainly two types.
+              . Programmatic Access: Enables an "Access key" and "Secret access key" for the AWS API, CLI,SDK, and other development tools.
+              . AWS console Access: Enables a password that allows users to sign-in to the AWS management console.
+    Console Password:
+        . Auto generated Password: Amazon automatically generated one password for you.
+        . customised passowrd: we can give your own password.
+    Permissions:
+        . Add to Group: if that group have some permissions same permissions are appiled to that user.
+        . Copy permissions from Exisiting user: coping permissions from exisiting user.
+        . Attach Exisiting poilcy: add your policies directly.
+                --> Orelse if needed we can create your customised policy also but it is in JSON format.
+                --> JSON is a Super java (Java Script Object Notation)
+                --> Orelse we have a policy generators simply we can choose whatever permissions you want to allocate particular user simply choose those permissions and services and click on generate simply copy that and paste it.
+                --> Amazon predefined policies doesn't have a write activites. only read access.
+
+Console link: # https://console.aws.amazon.com/
+    . It is trying to login under root user.
+IAM link: # https://<Acoount ID>.signin.aws.amazon.com/console
+    . It is trying to login through IAM user.
+    --> But Account ID display is not a secure way simply cutomise that id we have a option Cutomize and give your account name.
+
+Secure Access: 
+    # IAM dashboard >> users >> ADD user >> Give username >> select AWS access type (Programmatic way) >> Permissions >> select your type of permissions >> metadata information gives or not >> once your user created you will get one .csv file >> In that .csv file have access key and secret key 
+
+  . This IAM user can created under Programmatic way so we need to access this under CLI or SDK or API.
+  . Before we can access this we need to install AWS cli in your instance.
+  Install AWS CLI:
+  . login to your instance.
+  . check version # aws --version  
+  . Install aws cli through pip package # pip 
+        --> PIP is also package managment tool PYTHON INDEX PACKAGE.
+  . check pip version # pip --version
+  . install pip package # apt install python-pip
+      --> pip package is installed including dependency packages.
+  . install awscli # pip install awscli
+  . To access through cli to s3 bucket. to list out buckets in s3 # aws s3 ls
+  . If you don't have a permissions to access awscli to s3 bucket # aws configure
+  . And give your Access key and Secret key and defualt region too and also default output format also (json).
+
+Multi factor Authentication:
+     # IAM dashboard >> select your user >> Security Credentials >> Assigned MFA >> choose your MFA device >> It is provide one BAR code and scan it then authenticate it >> After scan this we will get two consecutive MFA codes. >> now we can able to login that IAM user 
+     . MFA code was updated every thirty seconds.
+     . Only admin can assign or diassgin that Multi factor authentication.
+     # IAM dashboard >> select your user >> Security Credentials >> manage >> remove 
+
+#######################################################............ IAM (Identity and Access Management) Policy..........#######################################################################
+
+IAM Policy:
+      --> Basically we have 2 types of policies.
+            . Pre-defined Policies.
+            . User defined Policies.
+      --> It contains permissions to add to the specific users and groups.
+      --> IAM requires that policies be in JSON format.
+      --> JSON Document that contains set of permissions on AWS account.
+      JSON Document:
+          . A Document that defines one or more permissions.
+          . can be attached to users,groups,roles.
+          . Written in JavaScript Object Notation.
+          . Select from pre-defined AWS list of policies or create your own policy.
+
+Pre-defined Policies:
+    Administration Access Policy : User got all administration full access.
+    EC2 full access: user got EC2 related permissions.
+                  . EC2
+                  . Elastic Load Balancer
+                  . CLoud watch
+                  . Auto scaling
+
+User-defined Policies:
+    Introduction to JSON Policy:
+      To assign permissions to a user, group, role, or resource, you create a JSON policy, which is a document that defines permissions.
+          . Effect – whether the policy allows or denies access
+          . Action – the list of actions that are allowed or denied by the policy
+          . Resource – the list of resources on which the actions can occur
+          . Condition (Optional) – the circumstances under which the policy grants permission
+
+    # IAM dashBoard >> left we have a option "Policies" >> Click on Filter policy >> click on Customised Policy >> 
+
+--> Policies are documents that are stored using JSON. A policy consists of one or more statements.
+##############################################################################
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": "s3:ListBucket", or s3:*--> this user got all permissions.
+    "Resource": "arn:aws:s3:::example_bucket/*"
+  }
+}
+##############################################################################
+ARN: Address Resource Name.
+      # arn:aws:s3:account-id:region:example_bucket/*
+    --> Basically s3-bucket is a global service. bucket name should be unique
+
+Policy generator: This is used for to get that JSON code
+    . Under Google # aws policy generetor
+        # "IAM policy" type >> "allow" effects >> s3-service select [it for all services (*)] >> Actions [for all actions(*)] >> ARN >> Click on ADD STATEMENT >> After adding statement simply click on Generetor >> 
+
+Create Customised Policy:
+      # IAM policy >> create policy >> select JSON >> Upload those JSON syntax >> click on review policy >> Click on Create Policy 
+                       #  ->> Visual editor also we can create policy >> give inputs >> click on create policy >> 
+
+# Before assign IAM policies we need to assign public permissions.
+
+Assign Customised Policies:
+  # Login to IAM user >> users >> add permission >> add existing policies >> select you created policy >> Add permission to the user 
+
+  ref link for instance arn: https://docs.aws.amazon.com/IAM/latest/UserGuide/list_amazonec2.html#amazonec2-resources-for-iam-policies
+
+#######################################################............ IAM (Identity and Access Management) Role..........#######################################################################
+
+IAM role:
+      . An IAM role is similar to a user, in that it is an AWS identity with permission policies that determine what the identity can and cannot do in AWS.
+      . However, instead of being uniquely associated with one person, a role is intended to be assumable by anyone who needs it.
+      . Role is concept of with in a AWS IAM which you can use in-order to permission or authorise particular AWS services to call API's or take actions other AWS services.
+      . IAM roles - Roles are not Permissions !!!. A role is also an authentication method just as IAM users and groups. As an user, a role is also a operator (could be a human, could be a machine). Difference is that credentials with roles are temporary.
+      . IAM roles is used to provide permissions to one service to another service 
+
+    IAM role Features:
+        . An IAM role is very similar to the user.
+        . No Password or Access key is required.
+        . AWS identity with permissions policy that determine the access available to the identity.
+        . Can be assumed by anyone who requires it.    
+
+Note: IAM role can attach to instance while the instance launching time only not later on.
+ref link: https://www.youtube.com/watch?v=z9MOPMxnCjY
+  
+
+

@@ -1,0 +1,346 @@
+#######################################################............ S3-Bucket..........######################################################################################################
+
+          # Storage..............
+                                                                                                             Pay for charge based on usage....:
+
+S3-Bucket: SIMPLE STORAGE SERVICE.
+      
+      --> Genreally AWS provided two types of Storages 
+                  1. Block Level Storage. --> Elastic Block Level Storage.
+                  2. Object Level Storage.  --> S3-Service.
+
+  --> Amazon S3 has a simple web services interface that you can use to store and retrieve any amount of data, at any time, from anywhere on the web.
+      --> Once you Upload any type of Object related Storage we can able access anywhere on the web.
+      --> By default if you upload any file in s3-bucket it provided one unique end point.
+      --> By using that end point we can able to access anywhere in the internet.
+     # S3-Bucket supported Unlimited of Storage. But Volumes have 16 TIB maximum size. 
+     # Amazon provided S3-service as a web service.
+  --> Cloud storage provides a web service where your data can be stored, accessed and easily backed up by users over the internet.
+      --> Incase we want to share one location another location through internet we can able to manage your entire data.
+        # Bucket is a region Based service but console it showing like a Global.
+        
+  Types of AWS Storage:
+      
+      S3-Bucket: (Simple Storage Service) # Object Level Storage
+          --> We can transfer your data form your on premises to AWS services. Through Public Network.
+      EFS: (Elastic File System) # Block Level Storage
+          --> We can transfer your data form your on premises to AWS services. Through Public Network.
+      Storage Gateway:
+      Snowball Edge: 
+          --> This is used for migration purpose.
+          --> If we raise a request to AWS they will send AWS person to you and they are directly connecting your hard disk data and securely there are copied into Amazon datacenters Directly.
+          --> But we will pay for more charge because it is more expensive.
+          --> This is Physical Activites.
+          --> 100 percent  secure.
+      EBS: (Elastic Block Storage) # Block Level Storage
+      Glacier:    # Object Level Storage
+      Snowball:
+          --> snowball edge and snowball both are same.
+          --> based on speed we can raise this request.
+      Snowmobile: 
+          --> This is used for migration purpose.
+          --> If we raise a request to AWS they will send One Container to you and they are directly connecting your hard disk data and securely there are copied into Amazon datacenters Directly.
+          --> But we will pay for more charge because it is more expensive.
+          --> But it will use huge data.
+          --> This is Physical Activites.
+          --> 100 percent secure.
+
+      --> Glacier is also Part of S3.
+      --> Storage Gateway, Snowball, Snowball Edge, Snowmobile this all are dependence on requirement we can learn. 
+    
+  Define S3 (SIMPLE STORAGE SERVICE):
+    Amazon S3 (Simple Storage Service) provides object storage which is built for storing and recovering any amount of information or data from anywhere over the internet.
+
+  --> Amazon S3 provides storage through web services interfaces
+  --> It is designed for developers where web-scale computing can be easier for them
+  --> It provides 99.999999999% durability and 99.99% availability of objects
+  --> By default, you can create up to 100 buckets in each of your AWS accounts.
+  --> It can store computer files up to 5 terabytes in size.
+  --> Based on use cases we will pay for Charge.
+ 
+  What is Object and Bucket:
+    --> An object consists of data, key(assigned name) and metadata.
+    --> A bucket stores objects.
+    --> When data is added to the bucket, Amazon S3 creates a unique version ID and allocates it to the object.
+    --> Individual Amazon S3 objects can range in size from a minimum of 0 bytes to a maximum of 5 terabytes. The largest object that can be uploaded in a single PUT is 5 gigabytes.
+    --> There is no performance drop even if you store millions of objects in a single bucket.
+  
+  Advantages:
+      --> Some of the benefits of Amazon S3 are given below
+      --> One of the most important aspects of Amazon S3 is that you only pay for the storage used and not provisioned.
+            1. Durability. --> High Durability.
+            2. Low Cost. --> Compared to Block level storage Object level is lost cost because it is not used for real time environment.
+            3. Scalability. --> Any time we can resize and manage your data.
+            4. Availability. --> By default Amazon mantain backend two more copies.
+            5. Security.    --> Based on the Permissions we can allows that specific user to specific access.
+
+Creation of S3-Bucket:
+    step-1: Click on S3.
+          # S3 is a global Service it is not a Region based service. --> from UI perpesctive.
+    step-2: Click on create Bucket.  
+    step-3: Give Bucket name and that is unique.
+    step-4: Incase we want to Expose your Object data to out side internet simply uncheck "Block all Public access". # Object Level permissions.
+    step-5: Once we click on bucket by default it will created under you selected region.
+    step-6: If you upload any object click on that object and below you got a one Object URl for that object.
+            --> Basically your bucket provided that object URl.
+            # https://<bucketname>.<Your object DNS end point>/<object-name>
+            --> we can able to access your object over the internet. but before we need a public access.
+            --> But we have two types of permissions.
+                        1. Bucket Level Permissions. # It is Applicable for all Objects.
+                        2. Object Level Permissions. # It is Applicable for Specific Object only.
+    
+    step-7: To Enable Bucket Level permissions.
+              --> Go to bucket.
+              --> permissions.
+              --> Acess control list.
+              --> Public access.
+              --> click on everyone and give read and write permissions.
+    step-8: To Enable Object Level Permissions.
+              --> Go to Object dashboard.
+              --> Permissions.
+              --> Public access.
+              --> click on everyone and give read permissions.
+    step-9: If you upload and maintained Indivdualy simply use folder.
+    step-10: It we want delete existing Object select that Object. and then go to Actions. and we have a option delete.
+
+
+--> From UI perspective all your bucket are shown in one place. that's we see at the top it's shows Global.
+--> S3 is not a global service it's regional service.
+--> Bucket name should be uniq.
+
+--> In Aws any type of service by default we got one ARN (Amazon Resource Name). 
+-->  This ARN is used for Automation Perspective we can use.
+
+ARN: for s3 object : # arn:aws:s3:::bucketname/objectname.
+after s3 two sections are blanked : one is for region and another is for AC number. but s3 bucket totally uniq so we leave it blank.
+ref link: https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-arn-format.html
+
+
+Storage class: 
+
+  --> It's desiged based on different types of needs, you can choose. different storage class are different prices.
+  --> By default you upload a file it is going to be standard class.
+  --> Each object in Amazon S3 has a storage class associated with it.
+
+    Types of Storage Class:
+            
+            STANDARD:
+                --> STANDARD is the default storage class.
+                        # This storage class is ideal for performance-sensitive use cases and frequently accessed data.
+                --> If you don't specify storage class at the time that you upload an object, Amazon S3 assumes the STANDARD storage class.
+                --> Frequently access the data like images, java scripts.json...
+                --> While creating the bucket the object is replicated into 3 AZ's with in the Region.
+            STANDARD_IA (Infrequent access):
+                           #  This storage class (IA, for infrequent access) is optimized for long-lived and less frequently accessed data
+                    --> we are acess for every one month or historical purpose or for auditing purpose we can access it.
+                --> The STANDARD_IA storage class is suitable for larger objects greater than 128 Kilobytes that you want to keep for at least 30 days.
+                --> The per GB storage class less than standard but there is try to rectrive data there is additional fee.
+                    Example: backup files.
+                --> while creating the bucket the object is replicated into 3 AZ's with in the Region.
+            RR (Reduced Redundancy):
+                            # RRS storage class is designed for noncritical.
+                        --> Compared standard and standard_IA this is less expensive.
+                --> Reproducible data stored at lower levels of redundancy than the STANDARD storage class, which reduces storage costs.
+                --> While creating the bucket the object is replicated into 2 AZ's with in the Region. 
+                --> Durability bit lesserthan object, cost also.
+            GLACIER: 
+                            # The GLACIER storage class is suitable for archiving data where data access is infrequent. 
+                        --> By default we are not able to access directly. because Once we can upload your object into glacier by default your object is arcav (Zipped code).
+                --> Archived objects are not available for real-time access.
+                --> You must first restore the objects before you can access them.
+                --> GLACIER storage class using lifecycle management.
+                --> You must first restore the GLACIER objects before you can access them .(STANDARD, RRS, and STANDARD_IA objects are available for anytime access).
+
+Over view of Types of Storage Class:
+
+Storage Class:	           Durability: 	             Availability: 	                                 Other Considerations:
+                 
+STANDARD                   99.999999999%                99.99%                                       None
+STANDARD_IA                99.999999999%                99.9%                                        Which makes it most suitable for infrequently                       							accessed data.
+ONEZONE_IA                 99.999999999%                99.5%                                        Not resilient to the loss of the Availability Zone. 
+GLACIER                    99.999999999%                99.99%                                       GLACIER objects are not available for real-time 							access. 
+                                                                                                            You must first restore archived objects before 							you can access them.
+RRS                        99.99%                       99.99%                                       None
+Intelligent-Tiering        99.999999999%                99.999999999%                                
+How to Upload file with different storage classes:
+    
+    step-1: Click on Upload.
+    step-2: Add files.
+    step-3: Instead of click o upload click on next Option.
+    step-4: Set a premissions. To manage Public access simply click on " Grant on Public Access".
+    step-5: Under set properties. then we can choose storage class.
+    step-6: Click on Upload. 
+    --> By default your S3 assumes standard storage class.
+    # Glacier storage class we doesn't have permissions to access public.
+    --> Before we need to restore Glacier to Another storage class. To restore by using  # Lifecycle
+
+##############################################################......S3-Bucket Features................##############################################################
+
+Versioning : 
+
+  --> If different files are in the same name both are being put into same bucket. (for example file.1 file.2 both versions are maintain in the bucket.)
+  --> In case i gohead and delete a file it is not real delete which is just marker just created.
+  --> if i want that file goto remove marker i got that file.
+  --> if you gohead versioning you can't remove just suspended.
+
+    Enable Versioning:
+        step-1: Go to Bucket Dashboard.
+        step-2: In Bucket properties. we have a option versioning.
+        step-3: Click on versioning. and Enable it.
+        step-4: we have an option to version once we enable versioning.
+        --> Versioing dashboard is different and your normal dash board is different.
+        --> Then we can able to upload same file names files.
+        step-5: To check old version simply go to file we have click on latest version option we have both version.
+        step-6: If you enable versoning then delete versoning file but it is not deleted compeltely it stores verson option.
+        step-7: If you want to restore that deleted file simply go to actions and delete it in version folder. 
+            --> Once we delete this delete marker in versioning file.
+        --> If you completely delete file in s3 bucket and versioning also then if you want to restore that file simply raise a request to Amazon based on size and type they will charge.
+
+Life cycle:   
+    --> You can manage lifecycle of objects by using lifecycle rules.
+    --> lifecycle rules enables you to automatically transition objects to the STANDARD_IA storage class and / or archive objects to glacier.
+    --> Removed objects after a specifed time period.
+
+    Enabling Life Cycle:
+        step-1: Enable Life cycle rule for entire bucket level or else prefix(Specific folder) level.
+        step-2: Create one folder.
+        step-3: Go to Management we have a Life cycle option.
+                Name and Scope:
+                --> Click on Add life cycle rule.
+                --> Add life cycle rule name.
+                --> Click on Apply all objects in the bucket. or specific prefix file also we have an option.
+                Storage class Transition:
+                    --> Incase we have enable multiple versions simply choose your option either current version or previous version.
+                    --> Click on Add transistion.
+                    --> Give storage class type and time after that time it will automatically converted that type of class.
+                Expiration:
+                    --> Incase if you delete that file after some days simply use this option. from object creation it will counted.
+        step-4: Upload one file in to s3 bucket.
+     
+Cross-Region Replication:
+        # If you want to maintain high availability for your files we can choose Cross-Region Replications.
+        # It it majorly used to backup for entire bucket data.
+    --> To copy a files from one region bucket to another region.
+    --> Any object upload bucket it will get replicated destination region.
+
+    Enabling Cross-Region Replication:
+        step-1: Simply create 2-buckets on different regions. one bucket have public access another bucket doesn't have any public access.
+        step-2: Go to source region bucket and then go to management. we got a option "Replication"
+        step-3: Under Replicaton simply click on Add rule.
+        step-4: If you want to enable entire bucket simply click on Entire bucket. or click on specific prefix or tag.
+                  --> set destination again we have two options.
+                            1. destination buckets with in account
+                            2. destination buckets another account  
+                  --> Scroll down got a list of buckets.
+                  --> before Enable Cross region Replication for this bucket we need to enable versoning feature for that bucket.
+                  # both Destination and source bucket must have versoning feature.
+                  --> Simply give rule name and IAM-role because we need some kind of permissions. by default it is doesn't allow one bucket to another bucket copied automatically.
+                  --> As of now we can choose create new role.
+        step-5: Now we going to upload one object on source bucket and it is automatically replicated to destination bucket.
+        --> Unfortunately your file is deleted in your source location but it is available on destination bucket because it is  automatically replicated to destination bucket.
+        
+Requester pays: 
+        --> S3-bucket charges data storage purpose and data transfer also.
+        --> Instead of bucket owner data transfer charges are payed by requester simply enable requester pays.
+    --> Enable request pays on this bucket causes the requester.
+    --> Instead of the bucket owner to pay for the charges of requester and data transfer.
+
+    Enabling Requester Pays:
+        step-1: goto your bucekt and then properties. (bucket properties).
+        step-2: we have option Requester Pays.
+        step-3: Simply Enable Requester Pays. and save it.
+
+--> edge locations= small data centers.
+--> regions are contains= multiple advanced data ceters.
+--> regions are contais availaiabiliy centers and that AZ's we have multiple datacenters.
+--> In india Amazon maintained one edge location that is located in chennai.
+
+Tranfer Acceleration : 
+    --> We are transfer the data from one region to another region through edge locations.
+    --> Once enabled it will seach nearest edge locations and route the traffic to that location.
+    --> From base location to edge loaction transfer data through public n/w , then transfer through aws n/w.
+    --> Data transfer 300% faster.	
+    --> Amazon S3 Transfer Acceleration enables fast, easy, and secure transfers of files over long distances between your client and an S3 bucket.
+        --> Once we enable Transfer Acceleration # data transfer from source loaction to nearest edge location through public network and transfer data through private network (Amazon priavte network).
+        # pay for some extra charge.
+
+Server Access Logging:
+        --> Each and every one log is generated automtically.
+    --> To track requests for access to your bucket, There is no extra charge for enabling server access logging on an Amazon S3 bucket.
+    --> You can delete the log files at any time.
+    --> Access log information can be useful in security and access audits.
+    --> It can also help you learn about your customer base and understand your Amazon S3 bill.
+    --> No data transfer charges are assessed for log file delivery, but access to the delivered log files is charged the same as any other data transfer. 
+    
+    Enabling Server Access Logging:
+        step-1: goto Bucket properties.
+        step-2: we need to upload file in bucket.
+        step-3: we have an Option and then enable that server Access logging. and save it.
+            --> Give Target bucketand then we choose prefix logging.
+
+Hosting a Static Website on Amazon S3:
+            # we will get any redirection opertion in this option. Because it allows only static type of contents.
+    --> You can host a static website on Amazon Simple Storage Service (Amazon S3).
+    --> On a static website, individual webpages include static content. They might also contain client-side scripts.
+    --> Dynamic website relies on server-side processing, including server-side scripts such as PHP, JSP, or ASP.NET. Amazon S3 does not support server-side scripting.
+    The website is then available at the AWS Region-specific website endpoint of the bucket, which is in one of the following formats:
+             # ** <bucket-name>.s3-website-<AWS-region>.amazonaws.com **
+    Enabling Hosting a Static Website:
+        step-1: goto Bucket properties.
+        step-2: we have a option static website hosting.
+        --> Once your end user trying to Acess our default front-end page then it will automatically redirect to back-end page.
+        step-3: click on Static website hosting and then select on your html file.
+        step-4: And then we have a option redirect requests and then your application server end point.
+        step-5: Before we access provide some public permissions on that file.
+                --> To make particular file as public simply we have a option "Make public". on file or object dash board.
+        step-6: we have a endpoint on static web hosting as showed above syntax like then we can able to access. 
+
+ONEZONE_IA: 
+    --> Amazon S3 stores the object data in only one Availability Zone, which makes it less expensive than STANDARD_IA.
+
+We recommend the following:
+    --> STANDARD_IA—Use for your primary or only copy of data that can't be recreated.
+    --> ONEZONE_IA—Use if you can recreate the data if the Availability Zone fails, and for object replicas when setting cross-region replication (CRR).
+
+##############################################################......S3-Bucket New data 2.0................##############################################################
+
+Storage classes:
+    Intelligent-Tierting:	
+    
+                --> Long-lived data with changing or unknown access patterns.
+                Intelligent-Tiering stores objects in two access tiers:
+                        1. one tier that is optimized for frequent access and
+                        2. lower-cost tier that is optimized for infrequent access.
+                --> For a small monthly monitoring and automation fee per object,
+                --> S3 Intelligent-Tiering monitors access patterns and moves objects that have not been accessed for 30 consecutive days to the infrequent access tier. 
+                --> There are no retrieval fees in S3 Intelligent-Tiering. 
+                --> If an object in the infrequent access tier is accessed later, it is automatically moved back to the frequent access tier. 
+                --> No additional tiering fees apply when objects are moved between access tiers within the S3 Intelligent-Tiering storage class.
+        ref link: https://youtu.be/Y699Gjx2rNw
+        
+Restore S3-Glacier Object: 
+
+            --> Once we upload a file under Glacier storage class by default we don't have a option to access in real time.
+            --> Early we don't have a option to restore it in console level. BY using AWS CLI we can restore and manage your data.
+            --> Recent Amazon released one option to restore it. # temporarly
+            --> Simply select your file then we got option to restore it click on "Restore".
+            --> And then give number of days to restore it.
+            --> Select restore types based on restore types we can restore and based on that we can pay for charge.
+                    Bulk retrival it is less charge because it will take 5-12 hours.
+            --> For demo purpose we can choose Expendient Retrival. with in 1 -5 mins it will retrive your data.
+            # To restore permenently simply using AWS CLI.
+            --> It wil take some 1 to 5 mins to restore it and then we have a option make public and then we can able to access.
+
+    Ref link: https://aws.amazon.com/premiumsupport/knowledge-center/restore-glacier-tiers/
+
+GetObject:    
+        . GetObject function when there is a current instance of the object or if you want to create the object with a file already loaded. 
+            . If there is no current instance, and you don't want the object started with a file loaded, use the CreateObject function.
+        Syntax: # GetObject([ pathname ], [ class ])
+
+Ref Link: https://docs.microsoft.com/en-us/office/vba/language/reference/user-interface-help/getobject-function#:~:text=Use%20the%20GetObject%20function%20when,loaded%2C%20use%20the%20CreateObject%20function.
+          https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObject.html
+
+PutObject:
+  Ref Link:      https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html
+

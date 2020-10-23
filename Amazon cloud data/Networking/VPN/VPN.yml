@@ -1,0 +1,161 @@
+#######################################################............ Virtual Private Network - Connection ..........######################################################################################################
+
+VPN(Virtual Private Network):
+    # AWS Virtual Private Network solutions establish secure connections between your on-premises networks, remote offices, client devices, and the AWS global network.
+      . VPN connection which is created secure private link between our VPC (on AWS) and your On premises data center 
+      . Once the VPN connection is establish you would be able to access all resources within your VPC using it's private IP address from your On premises datacenter.
+      . All the data which flows on the VPN conncetion it is going to be encrypted and it fallows # IPsec protocol 
+    
+    AWS VPN is comprised of two services:
+            . AWS Site-to-Site VPN 
+            . AWS Client VPN
+    --> Together, they deliver a highly-available, managed, and elastic cloud VPN solution to protect your network traffic.
+
+There are mainly three important parts are they:
+    . VPN Gate way --> It is represents from your AWS side.
+    . Customer Gateway --> It is represents from client side.
+
+AWS Site-to-Site VPN: 
+  --> AWS Site-to-Site VPN creates encrypted tunnels between your network and your Amazon Virtual Private Clouds or AWS Transit Gateways.
+      --> AWS Site-to-Site VPN enables you to securely connect your on-premises network or branch office site to your Amazon Virtual Private Cloud (Amazon VPC).
+
+AWS Client VPN:
+  --> For managing remote access, AWS Client VPN connects your users to AWS or on-premises resources using a VPN software client.
+
+VPN Connection Gate ways:
+            Generally there are three types of Gateways are they In this Network part
+                    . Virtual Private Gate way (For Normal Level Companies)
+                    . Transist Gate way (For High Level Companies)
+                    . Direct Gate way (Recently Added)
+###########################################............. Virtul Private Gate way..................###########################################
+
+
+Virtual Private Gate way:
+        . VPN connection which is created secure private link between our VPC (on AWS) and your On premises data center.
+        . for Each VPC's required one VPN connection is they
+        . Only Limit VPC's are allows in customer gateway.
+
+Steps for Client side VPN connections:
+          step-1: create 2 instances with different VPC's and different regions.
+          step-2: Setup VPN site to Site VPN sonnections.
+          step-3: login to instances which is connected to customer gate way.
+          step-4: And install Openswan # apt-get install openswan
+          step-5: we need check so ip's are properly configured are not.
+              . check it on # vim /etc/ipsec.conf  
+              . Commient it # "# include /etc/ipsec.d/*.conf"
+          step-6: Update it # etc/sysctl.conf
+              --> This is required because this machine is acts as a router 
+                  # net.ipv4.ip_forward = 1
+                  # net.ipv4.conf.all.accept_redirects=0
+                  # net.ipv4.conf.all.send_redirects=6
+          step-7: restart your network service # service network restart
+          step-8: Download Configurattion file on AWS VPN in that select "Openswan".
+          step-9: Create one new file at the same machine # vim /etc/ipsec.d/aws.conf
+              --> In that we need to copy all tunnel details. it is available under downloaded file
+              --> delete #auth=esp
+          step-10: similary we need to create one more new file under # vim /etc/ipsec.d/aws.secrets
+                --> put htat entire it is availble under downloaded file
+          Generally copy both tunnels on machine but # Openswan doesn't supported both tunnels at a same machine.
+          step-11: Go to # vim /etc/ipsec.d/aws.conf
+              modify <left subnet> (customer gateway side) and <right subnet> (AWS side)
+          step-12: Create one route table 
+                  . Route propagated.
+                  . simply check a click on it 
+          step-13:  start the service # service ipsec start
+          step-14: Check the status of the service # service ipsec status
+          step-15: To check wheather the traffic is flowing or not # ping < AWS side instance Ip address>
+
+    Steps for AWS side VPN conncetion:
+        step-1: create one VPC on your aws account.
+                .Before we need to create one VPC you should take CIDR from network Administrator which is basically free. Because they will ensure that will not use those IP range on any other machine within on premises Network.
+        step-2: Create a customer gateway.
+                  . Give it tag
+                  . There are two types of routing which are possible static and dynamic.
+                     *Static --> Give public Ip of the One premises router.
+                     *Dynamic --> with that public Ip we need BGP and ASN 
+                                  BGP: Border Gateway Protocol
+                                  ASN: Autonomous system Number
+                This is from On premises data side end.
+
+        step-3: Create Virtual private gateway.
+                This is from AWS data side end.
+                  . simply create Virtual private gateway.
+                  . And attached to our VPC
+
+        step-4: Go to VPN Connections.
+                . give it a name.
+                . choose our virtual private gateway.
+                . And choose your customer gateway.
+                . give static and dynamic IP prefiex.
+                    *static-prefiex which is basically CIDR range which is being used at your on premisies datacenter 
+                          . which is probably bigger one.          
+        step-5: Download the configuration file
+                  . In that file all this information
+        step-6: Configure the customer gateway device
+
+ref link: https://www.youtube.com/watch?v=3j1MLlgc5Eg  
+ref link: https://www.youtube.com/watch?v=5YvcyBecQts
+
+
+
+###############################################.....................Transist Gate Way................. ##############################################################
+
+ref link: https://www.youtube.com/results?search_query=how+to+connect+transist+gate+ways
+ref link: https://www.youtube.com/watch?v=j7Lcd0gHxg0
+
+Transist Gate way:  # regional based
+    . A transit gateway is a network transit hub that you can use to interconnect your virtual private clouds (VPC) and on-premises networks.
+    . can connects to VPC's from other AWS account (in that region)
+    . connects to VPN connection (instead of VGW,TGW)
+    . supports for inter-region connection.
+Use cases: 
+        . For large companies preferable. because lots of VPC peering connections are they to reduce complexity one Large gateway is used (Transist)
+        . The Transist Gate way will able to cordinate and manage and define rules that from where to where traffic end flow and should not flow.
+Concepts of Transist gateway:
+        Attachement: The Connection between an VPC to TGW(Transist gate way) or VPN to TGW (Transist gateway)
+                    . You should attach one subnet per Availabilty zone in your VPC.
+                AWS end:- TGW
+                Client end:- Customer gateway
+        Association: The route table is used to route packets coming from an attachment form an VPC and VPN.
+                        . One route table can be used for multiple VPC's
+        Propogation: The route table where the attachement's routes are installed
+                        . It will automatically propogate the values in the form of routes.  
+        Routes: It tell us where should the traffic goes.
+    
+Steps for Transist Gateway:
+    step-1: Create multiple VPC's with allocated to atleast two subnets each.
+    step-2: Create transist gateway which is in "Transist gate way route table".
+                check it on 
+                        . DNS support
+                        . ECMP support (Equal cost multi path)
+                                The traffic which will flow across this multiple VPN coonnections
+                        . Route table Association
+                        . Route table Propogation
+    step-3: And that VPC's must be associated with 
+            . internet gatway 
+            . Tranist gate way
+    step-4: Transist Gateway Attachments.
+            . For each VPC we need to create one Attachement.
+            . We can attach VPC's and as well VPN also.
+    step-5: Create Tranist Gateway route table for each route table.
+            . One is created by default.
+    step-6: Create Attachement.
+            . For attachement one we need to associated only one route table.
+    step-7: create Association.
+    step-8: create and allocate routes
+            . Static route means it doesn't goes traffic it just dropout.
+    step-9: Launch multiple instance based on your VPC's.
+    step-10: first instance # apt-get install telnet
+    step-11: connect to second and third instance # telnet <second instance private ip > :22
+    step-12: similary do that first and third instance in first one.
+            senarios:
+                . All Vpc's talks to each other.
+                . VPC-1 can send traffic to VPC-3 but VPC-2 cann't send traffic to VPC-3
+                . VPC-1 and VPC-2 can send traffic each other.
+    step-13: VPC-1 can send traffic to VPC-3 simliary reverse also.
+                 . Route table 1 >> propogation >> third gateway added >> simliary rotute table 3 >> propogation >> first gateway  
+    step-14: VPC-2 cann't send traffic to VPC-3.
+                
+
+Difference Between the Gate ways:
+            ref link: https://www.megaport.com/blog/aws-vgw-vs-dgw-vs-tgw/#:~:text=Transit%20Gateway%20provides%20enhanced%20routing,to%201.25Gbps%20of%20throughput.

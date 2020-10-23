@@ -1,0 +1,147 @@
+########################################........Elastic Block Storage........################################################################################
+
+         # Storage.........
+                                                                                                      Pay for Charge Based on Provising Size...:
+
+Basically Amazon provided two types of storages they are:-
+            1. Block level storage.
+            2. Object level storage.
+
+Elastic Block storage (EBS):
+      --> Elastic block storage provided Block level storage.
+      --> EBS volumes are duarable, and it provided block level storage for your device and attach to a single EC2-instance at a time.
+      --> We can use EBS volumes as primary storage. 
+            --> Primary storage like operating system opertions,databases,Applications.
+      --> We can dynamically increase size.
+            --> if you attached one volume then after attached also we can extend volume size also.
+      --> modify the provisioned capacity IOPS capacity also automatically.
+            --> Based on volumes size and based on volumes type you will get a no of IOPS (Input Output persecond).
+            --> based on your volume IOPS that performance will define.
+      --> changed volume type on live production volumes.
+            --> Onflow we can change volume size and type as well.
+      
+      Volume types:
+                  1. General Purpose SSD (gp2)
+                  2. Provisioned IOPS SSD (io1)
+                  3. Throughput Optimized HDD (st1)
+                  4. cold HDD (sc1)
+                  5. magnetic (standard, previous-generation type)
+
+            Based on your Application use cases we can select type of volume.
+            --> gp2,io1,st1,sc1,standard all this are API'S.
+            --> General purpose Provisioned IOPS these both are SSD IOPS (SSD-solid state disk) and Throughput optimised and cold these both are HDD IOPS (HDD-hard device disk) 
+            --> compared HDD disk,SSD disk provided 4times high performance.and also expensive.
+            --> we can perform read and write operations at no of IOPS per second.
+            --> for basic performance and testig purpose we can choose magnetic type of volumes.
+
+            General Purpose SSD (gp2):  # volume size 1Gib-15Tib
+                  --> It is recommended for 
+                        1. most work loads.
+                        2. system boot volumes.
+                        3. virtual desktops.
+                        4. developement and testing purpose.
+            Provisioned IOPS SSD (io1): # volume size 4Gib-16Tib
+                  --> compared to General purpose, Provisioned IOPS provides more input and output per second.
+                  --> critical business Applications are required for this provisioned IOPS
+                  --> Large database and workloads.
+                  --> It is also sutiable for sytem boot volumes
+            Throughput Optimised HDD (st1): # volume size 500Gib-16Tib
+                  --> Low cost HDD volumes. 
+                  --> designed for Frequently accessed throughput intensive workloads.
+                  --> Logs processing. 
+                  --> Backup porpose.
+                  --> Big data.
+                  --> data ware house.
+                  --> It is not sutibale for system boot volumes.
+            Cold HDD(sc1):  # volume size 500Gib-16Tib
+                  --> Throughput Oriented storage for large volumes data is infrequently accessed. 
+
+            --> As per EBS policy they will calculated entire your provisioned capacity volume size. either you use or not it will calculated automatically. or (they will not calculated your volume usage capacity)
+            --> By default primary any type of operating system we need general purpose.
+            --> By default our EC2-instances automatically allocated 8gb size for your instance.and also automatically allocated volume type gp2 at the time of instance launching.
+            --> Each and every one we can allocated one boot volume. based on AMI template we can select automatially type and size of volume.
+            --> gp2 supported only boot volumes because it can handle multiple workloads.
+            --> if you want change volume size and type of volume at the time of instance launching we can select it.
+
+      --> By default our EBS volume is # Availiability zone specific.
+      --> same like EC2-instance also # Availiability zone specific
+      --> presistent block level storage volumes offer consistent and low latency performance.
+            for example: if you have some data in your file system then we can umount them. still that data is there. that is called as data presistent.
+                        --> Again if attach another instances to that file system still that data is available.
+      --> Data is Presistent independent of the EC2-instance.
+            --> It is not dependent on instance level it's completely dependent on disk level.
+      --> Stored data is automatically replicated to with in it's Availiabilty zones.
+            --> that's way Amazon maintained durability and high availabilty.
+            --> console level it shows only one volume but backend amazon maintained multiple replicas.
+            --> so once we create a volume and select size of volume back end amazon maintained one more volume for back up purpose.
+            --> Once your console volume is corrupted. then we rise a request to Amazon team they will recover your lost data.
+            --> but how there are recover there are maintained multiple replicas within availiabilty zones.
+            -->if you modifiy any data it is automatically replicated to backend amazon maintained volumes also.
+            --> console level they will not maintained replica status. as per security reasons.
+
+--> Before creating volume and attach your instances then we need check either your volume zone and your instance zone both are same or not because volumes are zone specific.
+--> By default it is not allow other type of zones.
+
+##################################################.......... Elastic Block Storage...............##################################################
+
+--> At the time of instance launching by default Amazon allocated 8gb size of boot volume. to manage our operating system activities.
+--> root device shows "/dev/sda1" it contains all bootable operations.
+--> Incase if you add one more volume it shows #/dev/sdb or /dev/sdc..
+
+steps for creation of volume :
+      
+      step-1: Go to Elastic Block storage.
+      step-2: click on volumes.
+      step-3: click on create volume.
+      step-4: select type of volume.
+                  --> choose type of volume is magnetic (because it is cheap compared to remaining)
+                  --> Based on size of your volume you will get IOPS.
+      step-5: attach your volume to your instance.
+                  --> simply select your volume and go to actions and then attach volume.
+      --> But it is a logical volume by default it is not allows to read and write operations.
+      --> After attaching we need format logical volume to file system.
+      step-6: login to your instances.
+                  --> To check listout availiable volumes #lsblk
+      step-7: To make a format by using #mkfs.ext4 /dev/xvdf.
+      step-8: Again we create one mount point
+                  --> Create one directory #mkdir awsdata
+                  --> To mount your file system #mount /dev/xvdf /awsdata
+                  --> To check sucessfully mounted or not #df -h
+      step-9: To Extend your volumes.
+                  --> simply go to AWS console.
+                  --> Go to actions.
+                  --> modify volumes.
+                  --> If you want to change dynamically volume type also and size too.
+      step-10: Update your extended volumes size in file system level.
+                  --> simply go to virtual machine.
+                  --> simply resize2fs 
+      --> Dynamically increase your size of volume. and modify your existing size of IOPS capacity we no need to take any downtime.
+      step-11: Incase you want to remove your file system then simply #umount directory name 
+      step-12: If incase you want to detach you need to take downtime or umount your file system.
+                  --> simply go to actions and detach it.
+
+Based on volume size we will get billing. hardly it will take 5 to 10 rupees.
+By default Amazon provided upto 5GB size of volume as free.
+
+
+Difference Between Object Level Storage and Block Level Storage.:
+
+      
+   Block Level Storage:
+      --> If you choose any type of Hard disk either HDD or SDD or SCSE type of hard disk. By default your hard disks are allows to read and write your data like a Blocks wise. 
+      --> Your data stored like a Block wise.
+      --> Hard disk supported only Block Level Storage.
+      --> We can reduce or increase your size of Storage. or we can resize your storage.
+      --> It is expensive compared object level storage.
+      --> It is a Dynamic type of Content.
+      --> Block Level Storage can supported Real time Environment.
+
+   Object Level Storage:
+       Object: It is a kind of things like laptop, mouse all this are objects.
+            --> We never customised this existing size.
+            --> S3-Bucket provided Unlimited storage.
+            --> Based on size of your Object we can store it.
+            --> We can't able to resize it. because it is a static type of content.
+            --> S3-bucket can supported backup purpose.
+
+##################################################.......... New data 2.o...............#####################################################################

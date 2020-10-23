@@ -1,0 +1,17 @@
+######################################............... Cloud Trail ....................####################################################
+
+Cloud Trail:
+    . AWS CloudTrail is an AWS service that helps you enable governance, compliance, and operational and risk auditing of your AWS account. 
+    . Actions taken by a user, role, or an AWS service are recorded as events in CloudTrail. 
+    . Events include actions taken in the AWS Management Console, AWS Command Line Interface, and AWS SDKs and APIs.
+    . CloudTrail is enabled on your AWS account when you create it.
+    . When activity occurs in your AWS account, that activity is recorded in a CloudTrail event.
+    . You can easily view events in the CloudTrail console by going to Event history.
+    . Event history allows you to view, search, and download the past 90 days of activity in your AWS account.
+    . Next, from the Advanced section, you can optionally configure a Log file prefix. By default, the logs will automatically get stored under a folder-like hierarchy that is usually of the form AWSLogs/ACCOUNT_ID/CloudTrail/REGION.
+    . You can also opt to Encrypt log files with the help of an AWS KMS key. Enabling this feature is highly recommended for production use.
+
+    . It was enble by default 
+    . It was Collecting and Maintain entire your resources logs.
+    . We can check last 90days your account details information.
+    . If you want to create particular cloud trail and stored into s3 bucket.

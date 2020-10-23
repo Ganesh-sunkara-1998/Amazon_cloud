@@ -1,0 +1,232 @@
+############################################################......Elastic Compute Cloud...........##########################################################################################
+        # Cloud Infrastructure...........
+                                                                                                                        Free Tier Service:
+EC2-Elastic Compute Cloud:
+        --> EC2 provides Scalable computing capacity in the AWS(Amazon Web Solutions) cloud.
+        --> You can use Amazon EC2 to launch as many or as few virtual servers as you need, configure security and networking,and manage storage.
+
+    Features:
+      --> Virtual computing environments, known as instances.
+      --> Preconfigured templates for your instances,known as AMAZON MACHINE IMAGES (AMI's), that package the bits you need for your server (including operating system and additional software).
+      --> Various configurations of CPU,memory,storage,and networking capacity for your instances, known ass instances types.
+      --> Secure login information for your instances using key pairs (AWS stores the public key, and you store the private key in a secure place)
+      --> Presistent storage volumes for your data using Amazon Elastic Block Store (Amazon EBS), known as Amazon EBS volumes.
+      --> Multiple physical locations for your resources, such as instances and Amazon EBS volumes, known as regions and Availiability zones.
+      --> A firewall that enables you to specify the protocols, ports, and source IP ranges that can reach your instances using security groups.
+      --> Static IPv4 addresses for dynamic cloud computing, known as Elastic IP Addresses. 
+
+    Architecuture of AWS-Instances:
+
+        Once we raise a request to launch AWS instances to Amazon.
+        --> Amazon created virtual machines and their advanced data centers and provided only remote access by using pem key and username.
+        --> Amazon created virtual machines through "hypervisor".
+        Hypervisor:
+          In Amazon datacenter using XEN Hypervisor.
+          --> Hypervisor software allows create or manage multiple virtual machines on single bare metal host.
+          --> Xen hypervisor also open source hypervisor.
+        Bare metal host:
+          --> It is physical server. 
+        Xen-Hypervisor:
+          --> Xen offers two kinds of virtualisation:-
+                    1. HVM (Hardware Virtual Machine)
+                    2. PV (Paravirtualization)
+            --> As of now Amazon completely migrated to PV(Paravirtualization) to HVM(Hardware Virtual Machine)
+            --> 99% AMI's are running HVM (Hardware Virtualization machine).
+            --> But Inital days we choose either HVM or PV based on your needs. 
+            --> Compared to HVM Paravirtualization are running high speed. and also providing higly and scalable performance.
+            Window performance:
+              --> Compared to windows 7 windows sp as high performance. because in windows 7 has all device drivers are has installed inbuild. but windows sp has installed as you required.
+              --> Based on devices driver your operating system performance is high or low. That's way windows sp windows 7 running less speed.
+            --> Same HVM and PV also:-
+                HVM: It has inbuild we have installed kernel modules are their.
+                PV: we need to installed manually whatever modules we required in your operating system and Application.
+            --> Most of the AMI's templates created under hard ware virtualization.
+      
+   
+    AWS EC2-Instances purchasing Options:
+
+          On demand Instances: pay as use.
+              --> pay, by the second, for the instances that you launch. what we use is called.
+          Reserved Instances (advanced payment):
+              --> Purchase, at a significant discount, instances that are always available, for a term from one to three years.
+              --> It advance payment, 75% discount upto min 1 year and max 3 years.
+          Spot Instances:
+              --> Bid as unused instances, which can run as long as they are available and your bid is above the spot price, at a siginificant discount.
+              --> Bidding cheap (It hour's based).
+              --> Spot instances are not sutiable for production evnvironment and development environment.
+          Dedicated Hosts: (Physcial bare metal machine)
+              --> Pay for Physical host that is fully dedicated to running your instances.like ( BYOL- Bring Your Own Lic.Vm) will be dedicated to one host only.
+              --> compared to dedicated instance it will pay for more charge. because amazon dedicatly assign one physical server.
+          Dedicated Instances: (Virtual machine)
+              --> Pay, By the hour for instances that run on single tenant hardware.
+          Scheduled Instances:
+              --> Purchase Instances that are always available on the specified recurring schedule for a one-year team. 
+    
+    Types of resources in our instances:
+          Sharing resources:
+              --> Even your server is allocated one ip-address if we stopped your instanes that ip-address deallocated your instances and allocated into another instances.
+          Dedicated resources:
+              --> Even your server is stopped or reboot or shut down but still those sharing resources are dedicately allocated to our instances.
+              --> But we can pay for extra charge. because amazon dedicately allocated to our resources.
+        --> Data is securly stored in to your instances. it will allocated to sharing resources only.
+
+    AMI's (Amazon Machine Image):
+        --> Any type of operating system machine instance first we can select AMI-template is required.
+          # Amazon provide pre-configure templates.
+        --> We no need to configure your customised templates. After launching your instances you no need to installed your operating system.
+        --> An Amazon Machine Image (AMI) is a template that contains a software configuration (for example an operating system, an application server, and applications)
+        --> You can launch multiple instances of an AMI.
+        --> This template contains some third party application configurations and software configurations.
+        --> You can launch multiple EC2-instances by using single template.
+      
+      Types of AMI's:
+      
+          My AMI':
+                --> This are all customised AMI's.
+                --> Incase we create any customise AMI's or templates that templates are available in MY AMI.
+          AWS Marketplace:
+                --> This AMI's also provided Amazon.
+                --> This AMI's contains default OS and including some application configurations also.
+                --> Incase licensed AMI's their will charge resource utilisation and licensed utilisation.
+          Community AMI's:
+                --> This AMI's are provided Amazon.
+                --> This AMI's contains only basic OS installation and basic Applications only.
+                --> And based on your needs we can configure your Applications.
+                Amazon provided Community AMI's:
+                        1. Amazon Linux.
+                        2. Cent Os.
+                        3. Debain.
+                        4. Fedora.
+                        5. Gentoo.
+                        6. openSUSE.
+                        7. Other Linux.
+                        8. Red Hat.
+                        9. SUSE Linux.
+                        10. Ubuntu.
+                        11. Windows.
+
+    Instance Type:  # ref link:- https://aws.amazon.com/ec2/instance-types/
+
+        --> Basically this instance type provided decided and provided hardware components.
+        --> As of now Amazon divided multiple families. and each and every family contains multiple instance type family again in that family also multiple families are there.
+        --> Based on our requirement we can select type of instances.
+
+        --> Based on use cases we select type of instances.
+              1. General Purpose.
+              2. Compute Optimized.
+              3. Memory Optimized.
+              4. Accelerating Computing.
+              5. Storage Optimized.
+
+        --> Based on Instances type we get all those qualities
+                1. Instance size.
+                2. vCPU performance.
+                3. memory (GIB).
+                4. Instance Storage.(GIB)
+                5. Network band width(Gbps).
+                6. EBS band width (Mbps.
+
+        --> Basically Amazon provided GIB.
+             # 1024-MB = 1-GB (gega byte)
+             # 1024-GB = 1-TB
+             # 1073-MB = 1-GiB(Gibi byte)
+        --> Based on your needs you can choose type of instances. 
+        --> Amazon provided two types of storage.
+              1. Elastic Block Storage.
+              2. Object level Storage.
+        --> By default any operating system allocated EBS type of storage. but every EBS we have a two type of storage.
+        --> Basically In amazon datacenter their are set-up stoarge boxes.and their using two types of hard disks.
+              1. HDD (hard disk device drives):
+                    --> most of our laptops used in this HDD type of storages
+              2. SDD (soild state devices):
+                    --> compared HDD SDD disks are very expensive.and also provided 4 times high performance.
+        --> Basically EBS provided HDD type of disks.
+    
+    Configure Instances:  
+          step-1: Number of instance we want to launch.
+          step-2: Networking 
+                --> every region we will get one default VPC 
+          step-3: security groups.
+          step-4: IAM-roles.
+          step-5: monitoring options.
+                    user data allows to execute scripts after launching our instances.
+                  #  #!/bin/bash
+                  #  sudo apt-get update
+                  #  sudo apt-get install apache2 
+                sudo:
+                  --> When you launch your instance by default login to ubuntu home directory location.
+                  --> ubuntu is a normal user. by default normal user doesn't have an admin rights.
+                  --> Incase we use sudo that user got a admin permissions. we can able install what ever you want.
+                shell script:
+                    --> shell script will performe and execute command sequentialy at a time multipuly.
+
+    
+    Add storage:   
+        --> By default based on your AMI template selection amazon allocated default storage.
+        --> Incase if you want to required ubuntu template atleast we required 8gib of hard disk size.
+    
+    Add Tags:
+    Security group:
+        --> Amazon default fire wall is called a security group. it is acts as a virtual fire wall.
+        --> A security group Acts as a fire wall that controls the traffic for one or more instances.
+        --> when you launch an instances in a VPC, you must specifiy a security group that's created for that VPC. After launching an instance, we can change its security groups.
+        --> AWS security groups are associated with EC2 instances and provide security at the protocol and port access level.
+        --> Limited to only 100 security groups per VPC.
+        --> By default our security group allows inbound and out bound traffic.
+        # Incase we can define inbound rule as 22 port only for specific resource.. By default your security group allows only that resources only.
+        Any where: Any outside users can able to access this specific instance through ssh incoming request by using port. 
+        # Once we have define inbound rule by default it will applicable to outbound rule. security group is a stateful.
+        
+        Security group rules:
+         --> By default, security groups allow all outbound traffic.
+         --> The actual rule set that filters traffic is made up of two tables:- ‘Inbound’ and ‘Outbound’. 
+         --> AWS Security groups are stateful, meaning you do not need the same rules for both outbound traffic and inbound. 
+         --> Each rule is comprised of four fields:- ‘Type’, ‘Protocol’, ‘Port Range’, and ‘Source’. This applies for both ‘Inbound’ and ‘Outbound’ rules.
+          Type: The drop down list allows you to select common protocols like SSH, RDP, or HTTP. You can also choose custom protocols.
+          Protocol: This is typically greyed out, as it’s covered by most ‘Type’ choices. However, if you create a custom rule, you can specify your protocol (TCP/UDP etc.) here.
+          Port Range: This value will also usually be pre-filled, reflecting the default port or port range for your chosen protocol. However, there might be times when you prefer to use custom ports.
+          Source: This can be a Network Subnet range, a specific IP address, or another AWS security group. You can also leave access open to the entire Internet using the ‘Anywhere (0.0.0.0/0)’ value.
+
+To check particular port is listen or not in instance level: # curl http://localhost 
+
+To change default apache web page to your customised:
+    --> Once you install Apache package in your ubuntu operating system by default it will created one document root directory path
+            # /var/www/html/
+    --> In this location we got one file "index.html" .
+
+Once we can launch EC2-instance by default instance allocated one default "public Ip" and also "private Ip" .
+  --> Private Ip is a static Ip and it is never change. but Public Ip changed. because it is a sharing resources.
+  --> Once we launch an instance by default we got a two end points there is DNS end point or ip-address.
+
+# V.P.C: Amazon created own dedicated private network
+
+Difference between Public IP to Private IP:
+            Public IP                                                                 Private IP
+  1. We can able to Access local machine to remote machine.               1. We can able to Access Remote machine to another Remote machine.
+  2. To Transfer data from one machine to another machine                 2. To Transfer data from one machine to another machine it will transfer fastly
+        it will take some time.                                                   based on bandwidth.
+  3. Remote machine and local Machine both are running                    3. Both remote machines are running same network.
+      different network.
+  4. It can Transfer data from local machine to remote machine            4. It can Transfer data from one remote machine to another remote machine
+      compared to Private IP it is unsecure.                                    through securely.
+  5. Enable public key.                                                   5. Unable to use public key.
+  6. we can able to access outside internet.                              6. we cannot able to access outside internet.                                              
+  
+--> V.P.C is a region based services and subnets are zone based service.
+--> For every region Amazon created one default vpc and with in the vpc again amazon created subnets for each availiabailty zone.
+
+
+
+
+
+
+
+
+        
+
+    
+
+
+
+
+

@@ -1,0 +1,276 @@
+#######################################################............ Virtual Private Cloud..........######################################################################################################
+
+    # Region based service. 
+        
+VPC- Virtual Private Cloud: # By default VPC's are created under isolated environment.
+        --> Amazon own dedicated network is called VPC. bAsed on use cases we can divide those main network into subnets.
+        --> Amazon provide this VPC service as a webservice.
+        --> By default any type of AWS resources create and running under AWS VPC.
+        --> By default amazon allows each and every region to create and manage upto five default VPC's.
+        # static VPC routes per vpc route table is 100
+        # Amazon peering conection per vpc is 125
+  # subnet is Zone specific.
+        --> By default we don't have a permissions to access one network VPC to another network VPC.
+
+  --> Amazon Virtual Private Cloud (Amazon VPC) enables you to launch AWS resources into a virtual network that you've defined.
+  --> A virtual private cloud (VPC) is a virtual network dedicated to your AWS account. It is logically isolated from other virtual networks in the AWS Cloud.
+  --> A subnet is a range of IP addresses in your VPC. 
+  --> You can launch AWS resources into a specified subnet. Use a public subnet for resources that must be     connected to the internet, 
+  --> private subnet for resources that won't be connected to the internet.
+  --> To protect the AWS resources in each subnet, you can use multiple layers of security, including security groups and network access control lists (ACL).
+
+By default Amazon protect two type of firewalls. 
+    Security Group: --> It controls traffic from instances level.
+    Network Access Control: --> It controls traffic from network level.
+
+Once we create VPC automatically it will create Route table.and it is created under VPC level.
+  --> By using this internal VPC route table. we can access one network resources to another network resources network.
+  --> Both subnets created under same VPC.
+
+Routing Table:
+    --> A Route Table contains a set of rules, called routes, that are used to determine where network traffic is directed.
+    --> Each subnet in your VPC must be associated with a route table; the table controls the routing for the subnet.
+    --> A subnet can only be associated with one route table at a time, but we can associate multiple subnets with the same route table.
+--> By using this route table we can communicated one network to another netowrk.
+--> It will route your traffic within the your local network.
+
+Internet Gateway (IGW):
+    --> An internet Gateway is a horizontally scaled, redundant, and highly available VPC component that allows communication between instances in your VPC and the internet.
+    --> It therfore Imposes no availabilty risks or bandwidth constraints on your network traffic.
+    --> An internet Gateway serves two purposes:-
+    --> Provide a target in your VPC route tables for internet routable traffic.
+    --> Perform network address translation for instances that have been assigned public IP addresses. 
+--> We can use for internet Access.
+--> By default it will not get this gate way resources if you want to create you will create manually. After create this internet gateway we will attach this in your instances.
+ 
+--> After create VPC by default it will created 2 firewalls security group and network access control and one route table automatically.
+--> After that based on your architecture we will create routetables based on subnets. 
+
+Creation of VPC:
+    step-1: Go to Networking & content delivery section.
+    step-2: Click on VPC. 
+        # VPC is a region based service it not a global service.
+        In every region by default we will get a one default VPC.
+        Any IP start with:
+                    10.0.0.0
+                    192.168.0.0
+                    172.10.0.0 
+                # This IP's all are Private IP's. or this are dedicately design your IP as per ICANN (Interet Corporation Assigned Names and Numbers).
+        --> ICANN (Internet Corporation Assigned Names and Numbers) this is the world organisation this will define  private IP List and public IP List and also public Domains and private Domains.
+        --> 1916RF6 policy as per this policy this ICANN will decide any IP address start with 10,192,172. this all are dedicately Allowcated to Private IP. Apart from this three any number those all are white list IP's which is called Public IP's.
+        --> By default we will not get white list IP or Public IP. we will purchase this Public IP's from ICANN.   
+        --> If you launch EC2-instances by default we will get a one private IP address and one public IP address.
+        --> Private IP address based on your VPC selection we will get one IP addressis allocated to your instance. but Public IP is not a free tier. but Amzaon already purcashed some range of IP's from ICANN organisation.
+        --> They have decide one range to another range dedicately. Public IP's dedicately allocated to Aws Oraganisation.
+        --> Same like each and Every Organistaion they have purcased one specific IP address from ICANN Organisation.
+        --> Amazon dynamically allocated to your instances. but amazon provided you free tier resources. Because those IP's are sharing IP address.
+        --> Private IP allocated to your instances based on your VPC selection it will allocated.
+
+    step-3: Click On create VPC.
+            --> choose IPv4 CIDR-block range.
+            Based on resource utilisation based on number of IP address we can choose CIDR-Block
+            # But most of the real time senarios we can choose /16 because it will get upto 65000 IP address.
+            --> 192.168.0.0/16 this is your Network ID not a IP address.
+            Tenancy: If you choose default it is free tier. up to 5 VPC we no need to pay for any charge.
+            --> Incase If you select Dedicated VPC Amazon dedicately created one sperate network for you.
+        --> Every VPC got a one unique ID allocated to your VPC.
+        --> Once you create one customised VPC. by default that VPC has created one default "route table". which is called internal router. and also it will created "Network ACL" (firewall)
+        --> We have two types of firewalls. 
+                1. security group.
+                2. Network ACL.
+        --> whenever you create VPC by default it will create one route table and one default security group and default NACL.
+    --> But before deploying your resources we need a subnets by default this network acts as a private amazon own dedicated network. 
+    --> Incase if you want deploy any instances on this network by default it will not get a internet access.
+
+    step-4: Go to subnets.
+            # Subnets are Zone specific resources.
+            --> If you want divide that main network into subnets.
+            --> we need to create 2 subnets one is public subnet and another one private subnet. 
+            --> click on create subnet.
+            --> provide tag name
+            --> choose your customised VPC.
+            --> Choose your CIDR block. in this subnet how many IP address is required based on that we can choose CIDR block.
+                --> 192.168.0.0/16 this customised VPC network we got upto 65000 IP address.
+                --> 192.168.0.0/24 this subnet in this network we get a around 256 IP address Under your customised VPC we will create subnet.
+            
+            --> Similary we can create private subnet but CIDR block range is we need to give 192.168.1.0/24 because upto 256 IP address are alloated already to Public IP. 
+            --> As of now both subnets are created under private network. both are by default acts as a private subnets.
+            --> Based on route table this both subnets acts a public or private.
+    
+    step-5: By default under your customised VPC one route table is created.
+            --> we need to create another route table.
+            --> we create seprate route tables for sperate subnets
+            --> after creating route table got to routes.
+            destination location is your VPC. 
+            local--> It means within the network by default within the network we can manage your resources. one subnet to another subnet.
+            --> we can associate multiple subnets to one Route table but at a time we can associate one subnet to one route table.
+            --> we can associate both subnets one route table.
+            --> click on subnet Association and click on edit subnet association and choose your subnet.
+    
+    step-6: as of now we have public and private subnets and route tables. but both subnets are in private network.
+        # convert private subnet to public subnet by using internet gateway.
+        internet Gate way:  # you can able to access your network to outside internet.
+            --> To route your traffic VPC network to outside internet.
+            --> It allows both out going traffic and incoming traffic.
+            --> Incase that network allows only incoming traffic by default that network acts a public network.
+        --> we need to create internet gate way.
+        --> and then attached to your VPC
+        --> edit routes and choose destination for example 0.0.0.0/0 it means it can able to access anywhere in the internet.
+        --> Target we give internet gate way.
+    
+    step-7: we can launch your instances 
+            --> But under configuration section. we need to give your customised VPC.
+            --> and we can choose Public subnet.
+            --> enable auto assign IP address. once you launch your instance Amazon provide one IP address.
+            -->  In your customised VPC we will not get any DNS point. if you want to enable DNS end point.
+                --> simply select your VPC.
+                --> go to Action we have a option edit DNS host name and enable DNS host names.
+    step-8: create one security group for your dedicated VPC.
+
+    step-9: If you want to give your IP address for your instance.
+            --> at the time instance launching after choose your VPC and subnet.
+            --> Below we have a option Network interface.
+            --> Under primary IP we can give your IP- address based on your public subnet range
+                --> Your IP must and shuild within the CIDR block range.
+
+    step-10: we need check your instances is communicated or not. # ping google.com
+
+    step-11: we have private VM. we can access public VM to private vm.
+            --> Private VM we have a # ssh -i "key.pem" ubuntu@<private subnet Ip address>
+            --> under public instance we need to copy those ssh -i "key.pem" ubuntu@<private subnet Ip address>
+            --> Both private VM and Public VM created under same pem key.
+            --> But before we need to copy those pem key in your host machine. we have already downlaod pem key in your local machine.
+            --> by default your pem key doen't have read write permissions ( userlevel -rw)(grouplevel -r)(anotherlevel -r)
+            --> simply change default permissions to read only permissions # chmod 400 <pemkey_name>
+            --> Now we can able to login private VM.
+    
+    step-12: If you want update private VM repository.
+            --> It doesn't allows form your network to outside internet.
+            --> Even if you want to update your private vm repository we need public permissions. because those reques go to outside ubuntu global repository.
+            --> otherwise we are not able to update private VM.
+    
+    step-13: we need to update private VM by using NAT gateway.
+            --> Incase that network allows only incoming traffic by default that network acts a public network.
+            --> NAT gate ways allows only out going traffic from your VPC to outside internet.
+            --> After Update or download any package simply detach that NAT gate way.
+            --> at the time of create nat gate way we need to choose public subnet.
+            --> As of now Amazon provided NAT gate way like a web service.
+            --> But NAT gate way create  backend one  instances.
+            --> after create NAT gate way we need to add that NAT gate way to route table under private route.
+            NAT Gate way: # you can able to access private ip to outside internet.
+                --> You can use a network address translation (NAT) gateway to enable instances in a private subnet to connect to the internet or other AWS services.
+                --> You are charged for creating and using a NAT gateway in your account.
+                --> NAT gateway supports 5 Gbps of bandwidth and automatically scales up to 45 Gbps
+                --> You can associate exactly one Elastic IP address with a NAT gateway
+                NAT gateway supports the following protocols: TCP, UDP, and ICMP.
+
+
+VPC-Peering:                                                            # Payed service... we will pay for every second bill.
+        --> VPC's are created under isolated environment by default we don't have a permission to access one VPC-environment to Another VPC environment.
+        --> VPC's are accessed one VPC instances network to another VPC instances network through private network. incase those intances got public network by using that public network endpoint we can able to access.
+        --> Connect one VPC network to Another VPC network through private network then it is called as VPC Peering.
+    A VPC peering connection is a networking connection between two VPCs that enables you to route traffic between them using private IPv4 addresses or IPv6 addresses.
+    You can create a VPC peering connection between your own VPCs, or with a VPC in another AWS account.
+        --> we can create VPC peering connection between either your own VPC either it is own region or differenct region orelse another account region.
+        # How many VPC peering connections do i need # n(n-1)/2
+                here n = no of vpc's
+
+    steps to create VPC peering:
+            step-1: Launch 2 instances. with different VPC's either it is same account or different or same region or different region.
+            step-2: In security group for network purpose we can choose ICMP protocol.
+            step-3: login one instance to another instance through private ip # ping <another instance private Ip>
+                    --> it is unable to login because both instances are having different VPC's.
+            step-4: we need to enable connection between the VPC's.
+                    --> Under VPC's we got an option Peering connection.
+            step-5: After creating VPC peering connection. 
+                    --> As of now Peering connection and one VPC are in same region and same account so we need to send one accepter request to another one.
+                    --> Under Actions we have an option # Accept request.
+                    --> Once your accepter accept your request then your peering connection is automatically created.
+            step-6: under route table also we need to add one more route.
+                    --> select destination Private Ip.for both instances.
+                    --> And enable VPC peering connection.
+
+#######################################################............ Virtual Private Cloud Fire walls..........######################################################################################################
+
+Once we create one default VPC by default it will create one security group and NACL.
+we have two types of firewalls:
+            1. Security Group
+            2. NACL (Network Access Control List)
+            
+Security Groups: # It controls traffic instances level.
+    --> A security group acts as a virtual firewall that controls the traffic for one or more instances.
+    --> When you launch an instance in a VPC, you must specify a security group that's created for that VPC.After you launch an instance, you can change its security groups.
+    --> AWS security groups (SGs) are associated with EC2 instances and provide security at the protocol and port access level.
+    --> limited to only 100 security groups per VPC.
+
+    Rules:
+        --> By default, security groups allow all outbound traffic.
+        --> The actual rule set that filters traffic is made up of two tables: ‘Inbound’ and ‘Outbound’. 
+        --> AWS Security groups are stateful, meaning you do not need the same rules for both outbound traffic and inbound. 
+        --> Each rule is comprised of four fields: ‘Type’, ‘Protocol’, ‘Port Range’, and ‘Source’. This applies for both ‘Inbound’ and ‘Outbound’ rules.
+        Type: 
+            The drop down list allows you to select common protocols like SSH, RDP, or HTTP. You can also choose custom protocols.
+        Protocol:   
+            This is typically greyed out, as it’s covered by most ‘Type’ choices. However, if you create a custom rule, you can specify your protocol (TCP/UDP etc.) here.
+        Port Range: 
+            This value will also usually be pre-filled, reflecting the default port or port range for your chosen protocol. However, there might be times when you prefer to use custom ports.
+        Source:     
+            This can be a Network Subnet range, a specific IP address, or another AWS security group. You can also leave access open to the entire Internet using the ‘Anywhere (0.0.0.0/0)’ value.
+
+Network Access Control List:  # It controls traffic subnets level
+    --> A network access control list (ACL) is an optional layer of security for your VPC that acts as a firewall for controlling traffic in and out of one or more subnets.
+    --> ACLs monitor and filter traffic moving in and out of a network.
+    --> You can attach an ACL to one or more subnets within your Virtual Private Cloud (VPC).
+    --> If you haven’t created a custom ACL, then your subnets will automatically be associated with your VPC’s default ACL which ‘Allows’ all traffic to flow into and out of the network.
+    --> This is important, because ACL rules are read in ascending order
+    --> You can number of your rules starting at one (which will be read first), and going as high as 32766. 
+    --> I would suggest that you leave a gap of at least 50 numbers between each of your rules (i.e., 50, 100, 150…) to allow you to more easily add new rules in sequence later, if it should be necessary.
+    --> ACLs, on the other hand, are stateless. 
+    --> Therefore, when creating your rules, you may need to apply an outbound reply rule to permit responses to inbound requests.
+
+    Let’s explain these fields: 
+   
+      Rule:   
+          As we mentioned, ACL rules are read in ascending order, but only until a rule matching the packet is found. 
+          Care should be taken to number your rules appropriately when creating your rule base.
+      Type:   
+          This drop down list allows you to select from a list of common protocol types, including SSH, RDP, HTTP, and POP3. You can alternatively specify custom protocols such as varieties of ICMP.
+      Protocol:  
+          Based on your choice for ‘Type’, the Protocol option might be greyed out. For custom rules like TCP/UDP however, you should provide a value.
+      Port Range: 
+           If you do create a custom rule, you’ll need to specify the port range for the protocol to use
+      Source:     
+           This can be a network subnet range, a specific IP address, or even left open to traffic from anywhere (using this value: 0.0.0.0/0).
+      Allow/Deny:  
+          Each rule must include an action specifying whether the defined traffic will be allowed to pass or not.
+
+
+  --> When creating your ACLs be aware that there is a default limit of 20 inbound and 20 outbound rules per list. 
+  --> You can associate a network ACL with multiple subnets; however, a subnet can be associated with only one network ACL at a time.
+  --> The highest number that you can use for a rule is 32766. 
+  --> We recommend that you start by creating rules in increments (for example, increments of 10 or 100) so that you can insert new rules where you need to later on.
+
+Difference between Security Group and Network Access Control list:
+
+  Security Group:
+      --> Security Groups supports only allows rules.
+      --> security group is stateful, any changes appiled to an incoming rules is automatically appiled to an outgoing rule.
+      --> security group is tied to an instances.
+      --> security group is the first layer of the defense.
+      --> security group all rules are appiled.
+      --> It is by default is 'DenyALL' inbound.
+      --> It can specify only allow.
+
+  NACL (Network Access Control list):
+      --> Network Access Control List is stateless changes appiled to incoming will not be appiled to outbound.
+      --> Network Access Control List is tied to an subnets.
+      --> Network ACL is the second layer of the defense.
+      --> Network ACL rules are appiled in order,with rules with lower number processed first.
+      --> It is by default is "Allow ALL" both inbound and outbound.
+      --> You can specify both deny and allow.
+ 
+  
+
+
+
+

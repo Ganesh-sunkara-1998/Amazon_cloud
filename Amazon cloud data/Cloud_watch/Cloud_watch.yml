@@ -1,0 +1,171 @@
+##########################################################............. Cloud-Watch ............################################################################################
+
+Cloud Watch:   # Region Based Service.
+        . It is Amazon default monitoring Service. It will provide monitoring solutions for your AWS service.
+
+        . Amazon CloudWatch is a web service that enables you to monitor, manage, and publish various metrics, as well as configure alarm actions based on data from metrics.
+        
+        . Amazon CloudWatch monitors your Amazon AWS resources and the applications you run on Amazon AWS in real time.
+
+        . You can use CloudWatch to collect and track metrics, which are the variables you want to measure for your resources and applications.
+
+        . CloudWatch alarms send notifications or automatically make changes to the resources you are monitoring based on rules that you define.
+
+        . Basic monitoring: data about every 5min.
+              . By default amazon uses this Basic Monitoring.
+              . By default your instance already enable basic monitoring.
+
+        . Detail Monitoring: works with every 1min apart from every thing same.
+               . You will Pay for charge. every second.
+
+        . Cloudwatch provide the various metrics and key aspects.
+
+        . Key aspects provides Alarms.
+
+        . Amazon CloudWatch provides a reliable, scalable, and flexible monitoring solution that you can start using within minutes. 
+
+        . You no longer need to set up, manage, and scale your own monitoring systems and infrastructure.
+        
+        . Use CloudWatch Events to send system events from AWS resources to AWS Lambda functions, Amazon SNS topics, streams in Amazon Kinesis, and other target types.
+        
+        . Use CloudWatch Logs to monitor, store, and access your log files from Amazon EC2 instances, AWS CloudTrail, or other sources.
+
+Metrics:
+    . Metrics are data about the performance of your systems.
+          . CPU utilisation
+          . Network Stastitics
+          . System Stastics
+          . Disk utilisation those are all system performance which is called metrics.
+
+    . Metric data is kept for a period of 15 months, enabling you to view both up-to-the-minute data and historical data.
+    . A system or standard of measurement.
+
+# Your alarm reached defined threshold value you will get a notification. Based on the alarm it will send those messages from SNS topics.
+
+Cloud watch Alarm:
+      . You can create a CloudWatch alarm that watches a single metric. 
+            {One Cloud watch alarm can monitor at a time single metrics}
+      . The alarm performs one or more actions based on the value of the metric relative to a threshold over a number of time periods.
+          Ex: we have configure one alarm whenever your metrics data define your threshold value certain time period then you will get a notification.
+          . It will monitor continouse your define metrics Thershould value data
+          . Also it will wait for some time period.
+          . Even your metrics data reached to define threshould value then it will send a notification for you.
+      . Alarm triggers one or more actions based on the value of monitor matric.
+  
+  Alarm States:
+      . OK: The metric is within the defined threshold
+      . ALARM: The metric is outside of the defined threshold
+      . INSUFFICIENT_DATA: The alarm has just started, the metric is not available, or not enough data is available for the metric to determine the alarm state
+
+  Cloud watch Alarm Treats missing data:
+      . missing (The alarm looks back further in time to find additional data points)
+      . notBreaching (Treated as a data point that is within the threshold)
+      . Breaching (Treated as a data point that is breaching the threshold)
+      . ignore (The Current alarm state is maintained)
+
+
+Cloud watch by default doesn't monitor "memory metrics" if you want to enable memory metric simply create your customised metrics.
+we can create your own dashboard also.
+
+Status Checks:
+    . System level
+        --> System Level Passed means your Physical machine is working Properly.
+        --> If it not working Properly It is from datacenter level Issue.
+              . we can directly send a request to Amazon support.
+
+    . Instance Level 
+        --> Instance level Passed means your Virtual machine is working Properly.
+        --> If it is not working Properly It is from System level issue.
+
+
+Create A New Alarm:                                                                                 "Pay for charge"
+        step-1: Create SNS Service 
+                . Otherwise everytime we will go and monitor that cloudwatch.
+        step-2: Click on "Alarm".
+            . so which type of metric you want to monitor by using that metric you will create a cloudwatch alarm.
+            . Whenever your CPU or Network utilisation or system utilisation are went wrong you will get a notification. through SNS service
+        step-3: Enable Detail Monitoring "every one minute you will get data" {pay for charge}
+        step-4: Specify metric and conditions.
+                . Every Alarm it can monitoring one single metric.
+                . Within 1 minute it will reach your define threshold value we will get error it will wait for some time period 
+                . It will collect that latest data and also it will wait for some specific time period then your alarm will decide your metric statics.
+                Conditions:
+                    . Based on Conditions you will get a notifications.
+                    DataPoint:
+                        . Based on the Datapoints it will calculated time period.
+                    . Incase the conditions would paused you will get a notification.
+        Step-5: Once your get alarmed it will some actions based on your requirment we can enable that.
+        Step-6: By default it will shows "INSUFFICIENT" because it would take one minute time to collecting latest metric performance data.
+                 . Once it is collected that latest data then it will decide the actual alarm state. based on the condition.
+                    . Within the your define range then it will shows "OK" status.
+                    . Out of range the it will shows "ALARM" status.
+        step-7: Manually increase CPU Utilisation on your Instances.
+                # apt-get install stress
+                # stress  --cpu 8  --timeout 200s
+                # stress --cpu 10 -v timeout 400s
+                Check CPU utilisation status # top
+
+##########################################################............. Monitor memory and disk metrics for EC2 linux Instance ............################################################################################
+Configure Metric Manually:
+    Customised metrics for memeory utilisation:
+
+Disk means : File system Size used space and Available Space.
+. Amazon cloud watch provides most of the Monitoring metrics by default.
+. But it doesn't have any metrics for memory Utilisation details and disk space uses.
+
+PreRequeisities:
+    You will use the perl scripts provided by AWS team, these scripts have some dependencies.
+step-1:
+  Debian Based system: 
+    # sudo apt-get update
+    # sudo apt-get install unzip libwww-perl libdatetime-perl
+
+  Redhat Based System:
+    # sudo yum install perl-Switch perl-DateTime perl-Sys-Syslog perl-LWP-Protocol-http
+    # sudo yum install zip unzip
+    
+Because by default amazon provided zipped form.
+
+step-2:
+  Download and Configure cloudwatch scripts:
+        # cd /opt
+        # wget http:// aws-cloudwatch.s3.amazonaws.com/downlaods/CLoudWatchMonitoringScripts-1.2.1.zip
+        or Latest # curl https://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.2.zip -O
+        # unzip <package file-name>
+
+step-3:
+  configure some Credientals with template file:
+        # cd /opt/<unzipped file>
+        # cp awscreds.template.awscreds.conf
+        . Before to send this customised metric to cloud watch service we need a permissions 
+        . so generally we don't have a permission to access one AWS service to another AWS service. by default
+        . If you want to configure incase you want to custom metrics we need a permissions .
+step-4: 
+    Give Access key and Secret key:
+         step-1: Create one IAM user.
+         step-2: choose programmatic access type.
+         step-3: Give Cloudwatch full permissions.
+         step-4: download .csv file and copy that access key and secret key
+
+        By using this credientals it will send those metric data to cloud watch.
+
+Step-5: 
+    Test and Schedule Scripts:
+        The fallowing command is verfiying connectivity between your perl script and your aws account
+        # ./mon-put-instance-data.pl --mem-util --verify --verbose
+           . It will collect the latest metric data and send to cloudwatch alarm
+                # mon-get-instance-stats.pl
+                    . It will Display only status.
+        you can add this script to crontab to run on a regular interval to send data to your ec2 account. 
+            " */5 * * * * /opt/aws-scripts-mon/mon-put-instance-data.pl --mem-used-incl-cache-buff --mem-util --disk-space-util --disk-path=/ --from-cron "
+
+step-6: 
+        Checking:
+            AWS console >> Metrics >> custom Namespaces >> tick that your instance memory utilisation >> 
+
+
+
+
+Ref Link: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/mon-scripts.html#mon-scripts-perl_prereq
+          https://tecadmin.net/monitor-memory-disk-metrics-ec2-linux/
+

@@ -1,0 +1,214 @@
+#####################################...........Amazon web services Command Line Interface......##########################################################################
+                                                                                                                  Free Tier Service:
+Official documentation link: docs.aws.amazon.com/cli/
+
+Amazon command Line Interface:
+
+      AWS CLI is a unified tool for running and managing your various AWS services.
+      download and install the tool and you will be able to control multiple AWS services from the command line.
+
+The AWS Command Line Interface (AWS CLI) is an open source tool that enables you to interact with AWS services using commands in your command-line shell.
+
+--> Basically to manage services mainly 2 ways 
+            
+           Console path:
+                    Through console we can manage each and every service through graphically.
+           Command line interface:
+                    Through Command line also we can manage our Amazon services.
+
+  --> We can choose either Aws EC2-instance and orelse your local machine before we need configure and setup "AWS_CLI" and we have to enable authentication from your local vm to aws console or your local aws ec2-instance to aws console.
+  --> By default if your launch and configure your CLI tool on your AWS_EC2 instance by default we will not get any permissions to manage other AWS services from your instances.
+  --> Before we need to enable authentication between your aws service to other service to call APS.
+
+  --> we have two ways to enable authentication form one service to another service.
+       CLI(command line interface): 
+                --> By using Acess key and secert key. To manage other AWS services.
+       IAM-role (Identity And Access Management):
+                --> By using IAM-role we can enable authentication between one service to another service.
+
+#######################################.....................CLI(command line interface)..................###########################################################################
+  
+Steps to install command line interface:
+
+      To install through PIP is preferble:  
+      
+        step-1: Launch and login one basic instance to manage another services.
+        step-2: update your repository because it is new machine. #apt-get update
+        step-3: To check python version simply use #python --version
+        step-4: To install python package simply use #apt install python
+                  --> If you want to install python latest version simply #apt install python3
+        step-5: To check aws version simply use #aws --version
+        step-6: By default we will not getting pip package management tool
+                  --> To check pip package management tool version #pip --version
+                  --> To install pip package management tool simply use #apt-get install python-pip
+        step-7: To export local variables #export LC_ALL=C
+                  --> But this is the temporary varibale to export.
+        step-8: Then we can install awscli by using this pip package simply use #pip install awscli
+        step-9: To check awscli version and also pytho version simply use this #aws --version
+
+      --> Firstly to check pip latest version is installed or not. otherwise simply remove the pip.
+      --> Then download python and command line interface packages.
+      --> Generally in ubuntu machine we no need to add third party repository because already that cli package is available on third party repository
+        --> instead of apt-get <package management tool> as per cli policy we can use #pip
+        --> pip is one of the python index package management tool.
+        --> For ubuntu machine we can "apt-get" in redhat machine we can use "YUM"
+        --> Instead of using "apt install cli" we can use "pip" as per command line interface policy.
+        --> Generally AWS CLI as developed python language so that's way instead of package management tool we can use "pip"
+        --> pip automatically installed including dependency packages also.
+        --> After remove package simply fallows above steps form starting on words.
+
+      To install through apt-get:
+
+        step-1: To check CLI command is installed or not and its version too #aws --version
+        step-2: To install CLI package simply use #apt install cli
+
+--> Through AWS cli we can able to manage other aws services. before we need some permissions.
+Two ways to enable permissions manage other AWS service:
+      1. Enable IAM role.
+      2. We can able to access public key and priavte key.
+
+      Enable IAM role:
+            step-1: Go to AWS dash board.
+            step-2: click on "Resource Access Manager"
+            step-3: go to "Roles".
+            step-4: To create one customised role simply click on "create role"
+            step-5: Click on "EC2-instance" To allow EC2-instance permissions.
+                        --> we can choose full rights.
+            step-6: Search and enable admin permissions.
+            step-7: Enable Tag information also.and then click on create role.
+            --> After creating IAM role simply Attach that IAM to your EC2-instance.
+            step-8: To attach particular IAM role to your instance simply "go to Actions" in instance dashboard
+            step-9: Go to instance settings simply click on Attach or replace IAM-role.
+            --> So this instance got full access to manage other AWS services. 
+        
+--> To check particular command is run or not simply use: #echo $? 
+      --> After run this command we will get "0" means command runs sucessfully. instead of "0" you will get any other number means your command doesn't run properly.
+--> syntax of AWS service command line interface: #aws <service name>
+--> To update region also simply: #aws configure
+      --> simply ingore access key and secret key and update region but output has "json" format.
+--> command structure of the AWS CLI: #aws <command> <subcommand> [options and parameters]
+
+S3 BUCKET
+
+      --> To check list of buckets: #aws s3 ls 
+
+      --> To check bucket object information: #aws s3 ls s3://<bucketname>
+            --> Before we need to update region also.
+
+      --> To remove bucket simply: #aws s3 rb s3://<bucket-name>
+
+      --> To copy any local file to s3 bucket: #aws s3 cp <source file> s3://<bucket-name>/
+            --> To share your data from your local machine to s3 bucket.
+            --> To copy your file in to s3 bucket root directory location.
+
+      --> To create new bucket simply use: #aws s3 mb s3://<bucket-name>
+
+      --> To downlaod default ubuntu home location files from your s3 bucket to your local machine: #aws s3 sync s3://<bucket-name> /home/  
+
+EC2-Instance 
+
+      Create Instance:
+            #aws ec2 run-instances --image-id ami-9abea4fb --count 1 --instance-type t2. micro --key-name awsclidemokey --security-group-ids <your security group id here> --subnet-id <your subnet id here> --region <your region here>
+      Terminate Instances:
+            #aws ec2 terminate-instances --instance-ids <your instance id here> --region /<ntregion here>
+      Create SG:
+            # aws ec2 create-security-group --group-name my-sg --description "My security group" --vpc-id <vpcid>
+      Remove SG:
+            #aws ec2 delete-security-group --group-name ubuntu-group
+      Create Key-pair:
+            #aws ec2 create-key-pair --key-name my-key-pair
+      Delete key-pair:
+            #aws ec2 delete-key-pair --key-name MyKeyPair
+      To describe EC2-instance:
+            #aws ec2 describe-instance 
+      To describe particular instance through filter commands: 
+            #aws ec2 descirbe-instance --filter "Name=tag:Name,values=MyInstance"
+
+
+How to Recreate a lost Private Key for AWS EC2 Linux Instance:
+
+This Recreate a lost Private Key process needs minimum downtime to copy the new private key from new instance to the running Amazon Linux EC2 instance.
+--> Both instances should be running at same Availiabilty zones.
+
+      step-1: To launch one more instances
+      step-2: At the configure instance select one "subnet"  because It is ramdomly created one subnet and created newly created instances.
+      step-3: Instead of launched keypair we are going to create new keypair.
+      Both instances are having different key pairs.
+      --> Once you lost exisiting key pair we don't have permissions to resort same key pair. but we have a permission to restore other existing virtual machine key.
+      --> But before restore we need to take downtime.
+      step-4: To stop existing instances. means to take downtime.
+      step-5: Go to Elastic Block Storage. and detach existing(main) instance volume. because those instances is already stopped.
+      step-6: Again we can Attach to recovery vm (main volume attached to recovery vm).
+                  --> Attach lost-vm(main) volume to running instance.
+      step-7: launch running instance with Recovery.pemkey and change permissions simply use #chmod 400 <keypairname.pem>
+      step-8: To check list of available volumes by using #lsblk
+      step-9: To create one empty directory under /mnt simply use #mkdir /mnt/recovery 
+      step-10: To attach normal volume to specific directory. #mount /dev/xvdf1 /mnt/recovery/
+                  --> Intially it is a demovm (lost-vm) root file system
+                  --> so this vm contain old aws key related public key. as of now old key was lost that's way we have a new key.
+      step-11:  Now we are copy or append that new key in to old hard disk. simply use 
+                  #cat /home/ubuntu/.ssh/authorized_keys > /mnt/recovery/home/ubuntu/.ssh/authorized_keys
+      step-12: To check key is sucessfully added or not simply #cat /mnt/recovery/home/ubuntu/.ssh/authorized_keys
+                  --> Now your hard disk /dev/xvdf1 contains recovery key public key.
+      step-13: Once you mounted we can umount it #umount /mnt/recovery
+      step-14: After umount them simply go to volumes detach main(lost-key) volume.
+      As of now main vm doesn't have root volume then we need to attach main volume to main vm.
+      --> Once we launched demovm instance this vm got recoveryvm authorized key.
+      --> Now we can able to access this demovm by using recoveryvm.  
+      --> we can able to login recovery.pem and use main vm public ip address.
+
+Review of above steps:
+      step-1: Take a downtime. 
+      step-2: detach that root volume to instance.
+      step-3: Again attached that volume to recovery vm.
+      step-4: And copy that authorized key to that recovery vm mount point.
+      step-5: And Again detached to that recovery vm and attached to main vm. like a root volume.
+      step-6: Then we can able to acess.by using that latest key. 
+
+
+MOVING FILES FROM S3 TO EC2 INSTANCE 
+
+      To check list of buckets: # aws s3 ls
+      To copy data from ec2 to s3: #aws s3 cp /root/awsfile.html s3://devopscls05
+      To copy data from s3 to ec2: #aws s3 sync s3://devopscls05/ /root/
+      To copy the files from an s3 bucket to your local system:  # aws s3 cp s3://devopscls19bucket/index.html .
+
+EBS SNAPSHOT
+
+      Copying an Amazon EBS Snapshot:
+
+            --> I understand that EBS Snapshots are actually backed by S3 - they just don't show up in a "normal" bucket. 
+            --> The Console and CLI mechanisms that I see for copying snapshots seem to focus on copying a Snapshot from one region to another "as a snapshot", but not to S3 as an "arbitrary object".
+
+      Use Cases:
+
+            Geographic expansion: Launch your applications in a new region.
+
+            Migration: Move an application to a new region, to enable better availability and to minimize cost.
+
+            Disaster recovery: Back up your data and logs across different geographical locations at regular intervals. In case of disaster, you can restore your applications using point-in-time backups stored in the secondary region. This minimizes data loss and recovery time.
+
+      To copy a snap shoot using AWS CLI:
+
+            #aws --region us-east-1 ec2 copy-snapshot --source-region us-west-2 --source-snapshot-id snap-066877671789bd71b --description "This is my copied snapshot."
+
+To copy an AMI across the regions: (Data transfer charges are applicable based on your data speed and size we will pay for charge)
+
+        Using the AWS CLI:
+                # aws ec2 copy-image --source-image-id <ami-id> --source-region <region> --region <region> --name "<Description>"
+
+        Using AWS Management Console:
+            Login to AWS management console --> select the source region --> images, AMI's --> actions copy AMI
+
+
+
+
+
+
+
+
+
+
+
+            
+

@@ -1,0 +1,47 @@
+###################################################............... Lambda ....................##############################################################################
+
+Lambda:  # Region Based Service
+
+    . AWS Lambda is a compute service that lets you run code "without provisioning or managing servers".
+           . without Provisoing means without use any security groups or AWS resources because Lambda is a server less. 
+    . You pay only for the "compute time you consume" - there is no charge when your code is not running.
+    . AWS Lambda runs your code on a high-availability compute infrastructure and performs all of the administration of the compute resources, including server and operating system maintenance, capacity provisioning and automatic scaling, code monitoring and logging.
+    . No server to maintain - "serverless".
+    . AWS Lambda supports (currently Node.js, Java, C#, Go and Python).
+    . 128 MB of Memory and the lowest CPU power, to 3008 MB of Memory and the highest CPU power.
+        . Sutiable:
+        . It is sutiable for micro or small things only.
+        . It is not sutiable for large databases.
+
+    . Functions can run between "100ms and 15 minutes" in a length.
+    . Pricing depends on "resource level chosen,time of execution".
+    . Saves money as compute is used only when required.
+    . Supports IAM role and VPC. 
+    . Lambda cloud be triggered as result of events happening from many AWS services like s3.
+    . Lambda starts within milliseconds in responce to an event and hence reponce is very fast.
+
+    . when should you consider Lambda instead of EC2 :
+        . For stand-alone(stateless) code execution, which gets excuted and then stores the result somewhere like database,S3.
+        . When don't want to maintain servers (Os update,security,scalability etc).
+            Stateless: Code is executed and stored code in some where location 
+    # Lambda Functions are running container based Environment "Docker"
+    
+Lambda is also same like Beanstalk:
+  Beanstalk it will create your AWS resources for your application.
+
+Advantages of Lambda function:
+  . If you use EC2-resources and Benastalk you will pay for charge every min or sec but your code is running on every week or month. 
+  . In Lambda you will pay for only code running period.
+  . We no need to create AWS resources.
+
+Disadvantage:
+    . It is sutibale only small or micro codes only it is 128 MB of Memory and the lowest CPU power, to 3008 MB of Memory and the highest CPU power.
+
+When Should I Use AWS Lambda:
+    . AWS Lambda is an ideal compute platform for many application scenarios.
+    . When using AWS Lambda, you are responsible only for your code.
+    . AWS Lambda manages the compute fleet that offers a balance of memory, CPU, network, and other resources.
+    . AWS Lambda to perform operational and administrative activities on your behalf, including provisioning capacity, monitoring fleet health, applying security patches, deploying your code, and monitoring and logging your Lambda functions.
+ 
+  
+ # Lambda >> Create a lambda function >> create lambda IAM role >> and added to Lambda funtion >> 

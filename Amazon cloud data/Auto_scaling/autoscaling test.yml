@@ -1,0 +1,19 @@
+
+#stress --cpu 2 --timeout 120 --> for load testing you can use stress cmd.
+
+test html body:
+<html>
+<body bgcolor="#CC9900">
+<h1>Hello world!</h1>
+<p><a href="https://www.ganeshlinux.com">Visit ganeshlinux.com!</a></p>
+</body>
+</html>
+
+DesiredCapacity: 
+Based on my reading, in layman's terms, DesiredCapacity value is automatically updated on scale-in and scale-out events.
+In other words,Scale-in or Scale-out are done by decreasing or increasing the DesiredCapacity value.
+
+Enable Auto Scaling Group Metrics:
+When you enable Auto Scaling group metrics, Auto Scaling sends sampled data to CloudWatch every minute.
+
+

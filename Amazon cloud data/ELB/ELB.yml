@@ -1,0 +1,215 @@
+######################################################...........Elastic Load Balancer..............#################################################################
+        # Networking............
+                                                                                                                        Payed Service:
+Elastic Load Balancer: 
+        Statement: Elastic Load Balancing Automatically Distributes incoming application traffic across multiple targets such as # Amazon Elastic Compute Cloud (Amazon EC2) Instances,containers,and IP address.
+               #  I will distributed incoming Application traffic to backend resources 
+          --> ELB nothing but when appication traffic comes ELB receive the traffic it's like "one single URL IP" and automatically distributed traffic across multiple instance.These instance can be spread across multiple AZ's.
+          --> It's more secure your back end instance are not expose to the public.
+          --> It takes care of the fault tolerance.
+          --> There is Mask in between your ELB public ip will be expose to the public.
+          --> Elastic Load Balancing automatically distributes incoming application traffic across multiple targets, such as Amazon EC2 instances, containers, and IP addresses.
+    --> Amazon provided Elastic load balancer as a web service. we no need to make any seperate infrastructure for your load balancer.
+  For Example:
+    --> Once your server down automatically your instances are also down at the time any user trying to access your application you will get some site down issue.
+    --> we don't have high availability for this process.
+    --> So we launched one more instance and deployed same application in that instance. for high availabilty purpose.
+    --> But End user trying to Access single end point.every time we will not excuted multiple endpoints for same application.
+    --> we cannot expose direct end point to out side internet.
+    Instead of providing directly to your Application endpoint outside internet we choose one more front end layer called "load balancer".
+    Load Balancer:
+        --> It will provide single endpoint for your back end instances. we no need to provide multiple ip address to the end users.
+        --> Based on your configurations load balancer automatically distribute multiple back end instances automatically. 
+  # Based on the ELB health check policies your ELB immediately identified and it continously checking health checks for backend instances. 
+  # for High Availabilty purpose we can choose Elastic load Balancers.
+  # for security purpose also. we cannot provide instance end point to out side internet.
+  # Elastic Load Balancer supports Region Based service.
+
+  Types of Load Balancers:
+          1. Application Load Balancer
+          2. Network Load Balancer
+          3. Classic Load Balancer
+
+      Application Load Balancer:
+              --> An Application Load Balancer makes routing decisions at the application layer "(HTTP/HTTPS)", supports "path-based routing", and "can route requests to one or more ports on each container instance in your cluster".
+                      Any incoming request can go to specific target group.
+              --> Application level we are define roles.
+              --> Application load balancer can supported two types of protocols either HTTP and HTTPS.
+                    Web Application server --> HTTP. (80-port)
+                    web Application with secure --> HTTPS. (443-port)
+              --> Application load balancer either supported ports or path based routing.
+              Path Based Routing: It means if you launch instance and install apache package by default it will connects to document root directory path in your instances.
+                      #/var/www/html/index.html
+                    --> Incase this location have another file also "file.html" then it will direct to #/var/www/html/file.html
+                    --> By end user # <ip-address>/file.html 
+
+      Classic Load Balancer:
+              --> A Classic Load Balancer makes routing decisions at either the transport layer (TCP/SSL) or the application layer (HTTP/HTTPS).
+              --> Classic Load Balancers currently require a fixed relationship between the load balancer port and the container instance port. 
+              --> All the instance which are register to the load blancer they would have same contained.
+      Network Load Balancer:
+              --> A Network Load Balancer makes routing decisions at the transport layer (TCP/SSL).
+              --> It can handle millions of requests per second.
+              --> If extreme performance and static IP is needed for your application.
+
+# Basically network load balancer alternative feature is classic load balancer.In Feature Amazon planning to terminate classic load balancer.because it is a previous generation.
+# Basically Compared to Application load balancer Network load balancer provided high performance because per second it can handle millions of requests.
+
+  --> Difference between Application Load Balancer and Classic Load Balancer..:
+CLB: Can never understand or can never distinguish incoming request in terms of the contained (or) path which is it trying to request through protocol or port number.
+        hence whenever the new request comes the request can go to any one out of those instances.
+ALB: we can go ahead and create a rules or basically kind of guiding principals based on which any incoming requests.
+        --> It will send based one your content.
+
+        Layer-4 (Network):                                       Layer-7 (Application):
+      1. Supports TCP.                                         1. Supports HTTP and HTTPS.
+ 2. Incoming Client connection bound to server connection.     2. Connection terminated at the Load Balancer and pooled to the server.
+ 3. No Header modification.                                    3. Header May be modified.
+ 4. Source IP is preserved in the header or Proxy protocol     4. X-forwarded -for header contains client IP address.
+prepends source and destination IP and ports to requests.       
+
+# Based on OSI models we can choose layer.
+
+Application Load Balancer:
+        # Application Load Balancer can supported Port numbers and path based routing.
+        # By default Your Application Load Balancer Doesn't supported TCP type of Protocol.
+
+   Process of Application load balancer:
+        Protocol based Routing:
+                step-1: Launch 2 Instances with 22 port and 80 port in security group. 
+                step-2: Deploy web Application on Both Instances.
+                        --> To Update your reposiotry simply use #apt-get update.
+                        --> To install apache package in your Operating system simply use #apt-get install apache2
+                        --> By default apache file is created under #/var/www/html/. we have one file "index.html"
+                        --> simply edit that file.
+                        --> Each instance we need to add one html file under #/var/www/html
+                step-3: Then select Application Load balancer.
+                        --> select protocol with HTTP and also port number 80.
+                        --> choose your instances VPC. and atleast select 2 subnets.
+                step-4: Then add that target group into your load balancer.
+                        --> Then create one Target groups and register those Instances in to it.
+                step-5: Then Elastic load balancer have one DNS-endpoint then we can able to search on your web server.
+                step-6: To check ELB routining simply stop any instances and check it.
+
+        Path Based Routing:
+                step-1: Launch 2 Instances with 22 port and 80 port in security group. 
+                step-2: Deploy web Application on Both Instances.
+                        --> To Update your reposiotry simply use #apt-get update.
+                        --> To install apache package in your Operating system simply use #apt-get install apache2
+                        --> By default apache file is created under #/var/www/html/. we have one file "index.html"
+                        --> simply edit that file.
+                        --> Each instance we need to add one html file under #/var/www/html
+                step-3: Create one directory under #var/www/html/ 
+                        --> To Create one directory #mkdir works
+                        --> Create one file under that directory #vim work.html
+                step-4: Then add that target group into your load balancer.
+                        --> We need to create each target group has one instance and while creating target groups we need to give paths also.
+                        --> Then create one Target groups and register those Instances in to it.
+                step-5: Then select Application Load balancer.
+                        --> select protocol with HTTP and also port number 80.
+                        --> choose your instances VPC. and atleast select 2 subnets.
+                        --> we need to register both target groups in to load balancer.
+                                --> Go to listener and edit rules.
+                                --> click on + symbol. and then click on insert rule.
+                                --> we got a option add condition and action also. simply select path.
+                                --> And then give folder name  and this is also called wild card type like # *works*
+                                --> In action forwarded to your required target group.
+                                --> we need to add 2 rules becasue 2 target groups are their.
+                step-6: Then Elastic load balancer have one DNS-endpoint then we can able to search on your web server.
+                step-7: To check ELB routining simply stop any instances and check it.
+                step-8: To Search DNS-endpoint with directory and file name also.
+                        # <DNS-end point>/<folder-name>/<file-name>
+                        --> Similarly we can upload images also.
+
+  Type of Load Balancer:
+        We have Two Types of Load balancers.
+        Internet-facing: We will get public end-point for your load balancer.
+        Internal: We can able to Acess and distributed your incoming traffic within your network.
+  Listeners: A Listener is a process that checks for connection requests, using the protocol and port that you configured.
+        --> By using the listener port it will distribute your traffic back end.
+        # Instances and load balancers both are running same VPC.
+        # To create load balancer also we need a security group because backend Amazon maintain one seperate instances for you.
+        We cannot attach your instance directly to the laod balancer before we need a target group.
+
+  Target Group:                                                                                                                 Payed Service:
+        It is a logical container It can hold multiple backend resources.
+        --> ELB distributed target group based on target group listening port it will distributed backend EC2-instances. 
+
+  WinSCP:
+                --> If you upload images simply download and install #Winscp
+                --> It will establish connection between your local operating system to remote operating system
+                --> WinSCP supported cross platform.
+                --> Basically we transfer data from your local to remote we can use SFTP protocol. for authentication we can 22 port number.
+                --> Username is your remote machine host name ubuntu.
+                --> Incase your remote machine supported password based authentication we can use password.
+                --> Incase if you want to upload key click on "Advanced".
+                --> Click on SSH option under SSH we got a one option "Authentication". and then provide ppk key.
+
+        when you create load balancer we have one option path instead of /. /your file name so by default every time your load balancer trying to check that file name only.
+
+
+  Elastic Load Balancer Health Check Policies:
+                --> To create ELB either internal purpose or external purpose. Based on purpose we can select schema.
+                --> Incase we want to access entire globally we can choose external type of schema.
+                --> Based on protocols your webserver is going to listen.
+                --> By using protocol its is trying to route incoming request to back end resources.
+  Health checks:
+        Response time: It means your ELB will send a qurey to your EC2-instance and how long it can wait to get the response back.
+                --> Based on response time this ELB is health or not.
+                --> Within time your Instance doesn't respond then it will decided something goes wrong.
+        Health check Interval: How frequently ELB can qurey the health checks. It will check every mention time periodically.
+                --> After sending query to your instance immediately it will not decided again it will send a qurey up to your desired time period.
+                # Based on your interval time period it will send periodically. 
+        Unhealthy Threshold: Mention the time getting not respose then ELB decide instance fail.
+        Healthy Threshold: Mention time it is going to qurey then ELB will decide the state.
+                        --> By default it will get a 5 mins.
+                        --> Based on healthy threshold time period then it will decide that back end instance healthy or unhealthy
+        Monitoring:
+                Sucess codes:
+                        --> By default Sucess codes get 200.
+                        --> Sucess code in 200 to 299. it means you will get any type of number it means your Application is running properly. and also your incoming send to back end instances sucessfully.
+                Error:
+                        5xxs --> is related to backend instance or backend infrastructure.
+                        4xxs --> is related to services or configuration issuses.
+                        --> might be it is a Application issuse. It is not instance or infrastructure issue.
+                        2xxs --> is not error like status check.
+        # Based on your content it will send that incoming request to specific backend resources. but we can use common end points for both target groups.
+
+Network Load Balancer:
+        --> Incase we trying to route your incoming request by using network load balancer it will send either one of Target group but port number is same.
+        --> But network load balancer supported TCP and UDP type of protocols.
+        --> Network load balancer doesn't supported HTTP type of Protocol.
+        --> It will distributed based on listener not for content
+
+   Process of Network Load Balancer:
+
+        step-1: we can change either one of the Instance port number if incase after launching we want to change simply install apache2 because it is supported 8080 port number.and TCP type of protocol.
+                apt-get install apache2
+        step-2: To check tomcat back ground service # service tomcat8 status.
+        step-3: To check default port number #netstat -ntulp.
+        step-4: Add your security group incoming request 8080 port number.
+        step-5: As of now one of your instance running under 80 port and 8080 port number.         
+        step-6: Now we need to change target group with protocol TCP and port number 8080.
+        step-7: Now we need to register Target Group. 
+        step-8: Now select Load Balancer as Network Load Balancer.
+        step-9: In Configure Load Balancer give one name and add one more listeners "TCP" with port number "8080".
+                --> Now your load balacer can route your traffic 80 port request as well as 8080 port request.
+        step-10: select your VPC and also subnets atleast we need 2 subnets. for high availabilty purpose.
+        step-11: choose Exisiting target group.
+        step-12: create load balancer.
+        step-13: To create another Target Group with TCP or UDP type of protocols. but 80 port number is fine. because webserver instacne running under 80 port.
+        As of now we have two target groups and both Target Groups will added to load balancer.
+        --> By default it will route your traffic 80 port request we need to change 8080 port simply use # <ip-address>:8080
+
+######################################################...........Statements..............#################################################################
+
+Elastic Load Balancer: 
+        # Elastic Load Balancing Automatically Distributes incoming application traffic across multiple targets such as # Amazon Elastic Compute Cloud (Amazon EC2) Instances,containers,and IP address.
+Listener:
+        # Define the port and protocol that the load balancer must listen on.
+        Each Network load balancer atleast one listener to accept traffic.
+Target Groups:
+        # Logical Grouping of Targets behind the load balancer.
+        --> Target Groups can be exist Independently from the load balancer.
+        --> Target Group can associated with an Autoscaling group.
+        --> Target Group can contains up to 200 targets.

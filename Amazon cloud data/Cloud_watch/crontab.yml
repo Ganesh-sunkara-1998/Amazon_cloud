@@ -1,0 +1,28 @@
+Crontab:
+    It is a linux default service we no need to install seperate packages 
+        It will execute scripts that particular time period 
+     Crontab Fields:
+        . Minute of the Hour
+            ex: "*/5" It will executed every 5mins
+
+        . Hour of the Day
+            ex: "*"
+              min of the executed means it will executed every hour.so need to give "*"
+        
+        . Day of the month
+            ex: "*"  either monday......
+              day of the executed means it will executed every month.so need to give "*"
+        
+        . month of the year
+            ex: "*" for every month
+              particular month "<month name>"
+          
+        . day of the week
+            ex: "*" for every day
+
+        . what command we have to excute
+        
+        
+
+
+

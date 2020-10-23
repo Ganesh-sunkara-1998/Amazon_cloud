@@ -1,0 +1,33 @@
+######################################################...............Auto Scaling ....................####################################################################
+
+AutoScaling:   # region based service
+   . Amazon EC2 Auto Scaling helps you ensure that you have the correct number of Amazon EC2 instances available to handle the load for your application. 
+   . Maintain application availability by scaling up/down your Amazon EC2 automatically.
+   . Adds more instance during high load.
+   . Removes instances during less load.
+   . It is a web service designed to launch or terminate EC2 instance automatically based on user-defind policies,schedules,and health checks.
+   . It is manage Amazon EC2 Capacity automatically, maintain the Right no.of instance for your application, operate a healthy group of instance , and scale it accroding to your needs.
+   . You create collections of EC2 instances, called Auto Scaling groups.
+
+  AutoScaling Components:
+    . Launch Configuration (Template):
+        . AMI (Ex:- Amazon Linux, RedHat Linux)
+        . Instance type (Ex:- t2.micro, m4.large)
+        . Storage
+        . Security Group
+        . SSH-key pair
+    
+    . Auto Scaling Group:
+        . Launch Configurations
+        . Network/subnets
+        . Scaling Policies for Increase
+        . Scaling Policies for Decrease
+        . Monitoring And Alarm
+
+DesiredCapacity: 
+Based on my reading, in layman's terms, DesiredCapacity value is automatically updated on scale-in and scale-out events.
+In other words,Scale-in or Scale-out are done by decreasing or increasing the DesiredCapacity value.
+
+Enable Auto Scaling Group Metrics:
+When you enable Auto Scaling group metrics, Auto Scaling sends sampled data to CloudWatch every minute.
+

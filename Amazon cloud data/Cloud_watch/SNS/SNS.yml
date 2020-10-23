@@ -1,0 +1,59 @@
+##########################################################............. SNS ............################################################################################
+
+                                                                                                Payed Service:
+
+SNS: (Simple Notification Service)   # Region Based Service                   
+    . SNS is a fast, flexible, fully managed push messaging service.
+    . To get started with Amazon SNS, developers first have to create a topic, which is an Access point for subscribers who are interested in receving notifications about a specific suject.
+    . To push messages at a time mutiple targets subscribers.
+    . It can supported only push based Mechanism only by default it can't supported to Pull based mechanism.
+    Use cases:
+      . Incase any new event Occurs in your AWS services. 
+      . Incase you want to get some kind of notifications.
+    Example: 
+      In your Organisation have some 100's of machines suddenly one instances is down or reboot yoou don't know every time it is not possible to monitor through console each and every virtual machine
+    By using this SNS whenever some new event is happend SNS gives you notification like some kind of message.  
+    . We no need monitor each and every resources manually.
+  
+  Topic: Before we subsribe end point we need to create this topic. Based on this Topic your publisher subscribe to backend point.
+        . A Topic is a communication channel to send messages and subscribe to notifications.
+        . It provides an access point for publishers and subcribers to communicate with each other.
+        . First we have to create a topic and then we can subscribe those end points whoever ready to receive your notifications you will subscribe those endpoint users.
+
+                                    | --> SMS
+                                    | --> SQS
+      Publisher --> SNS Topic -->   | --> HTTP/S
+                                    | --> Email
+                                    | --> Lambda
+
+
+        . Topic will decide which end point which end point it will send to those related information.
+        . It Provide a access point for publishers and subsribers to communicate each other.
+    
+    Subsribe a Topic: 
+        . Once you create a Topic Before to Publish any messages we need to subscribe those end points to a topic. Once those endpoints your subcribtion is confirm then we can ready to publish your message.
+        . To receice messages published to a topic, you have to subcribe an endpoint to that topic.
+        . SNS Topic Supported:
+            . Mobile app.
+            . Web server.
+            . Email address.
+            . SQS Queue.
+
+Procedure for SNS:
+      step-1: Create Topics.
+      step-2: Subcribe those topic into endpoints.
+      step-3: SNS pushed messages to those Topic.
+              Step-1: Go to Topic.
+              Step-2: Click on "Publish Message"
+              Step-3: Fill you message data.
+
+    Encryption: Securely we will receive messages. "Pay for extra charge"
+
+# SNS Topic Can supported Push based Mechanism and it can't be supported Pull based.
+
+
+
+
+
+
+

@@ -1,0 +1,118 @@
+#######################################.....................AMI (Amazon Machine Image)..................###########################################################################
+
+AMI (Amazon Machine Image):
+      --> AMI is a Amazon Machine Image it's like a template.
+      --> It contains our operating system configurations including some binary files and library files.
+      --> Which is used to launched one or more EC2-instances by using this costumised AMI or Amazon customer AMI or predefined AMI.
+
+    Define AMI:
+          --> AMI (Amazon Machine Image) provides the information required to launch an instance to the cloud. AMI contains root volume for the instance root volume (snapshot with operating system, Application/DB) and set of permissions.
+      
+    Why to copy AMI across different regions:
+          --> AWS infrastructure is spread across different geographical zones (regions) across the world. copying an AMI across regions can provide the fallowing benefits:-
+                High Availiability:  As your Infrastructure and applications will be deployed across AWS region.
+                                --> For High Availibilty purpose we can copy our AMI's from one AMI to other AMI.
+                                --> Incase our Exising AMI has suddenly goes down or we lost our exisiting AMI's  incase that AMI already got snapshot for some where region by using that AMI again we can restore our application.
+                                --> we planing to deployed same infrastructure on another region simply we can take an intime cusotmised AMI and copied to that particular region by using that AMI simply we can launch your instances we will all configuraion details.
+                Performance: If you are Global Business, Using service in the closest/ appropriate region for low latency.
+                
+                Cost Saving:  Pricing for the services are/ may different across the regions. 
+                              --> If you have EC2 AMI's availaibale in cheaper region,can launch service there.
+
+    How to copy an AMI across the regions: (Data transfer charges are applicable based on your data speed and size we will pay for charge)
+
+        Using the AWS CLI:
+                # aws ec2 copy-image --source-image-id <ami-id> --source-region <region> --region <region> --name "<Description>"
+
+        Using AWS Management Console:
+            Login to AWS management console --> select the source region --> images, AMI's --> actions copy AMI
+        
+        cron jobs: To update latest AMI every day simply use Cron jobs based on our time period it will updated every day.
+
+     Steps to Share your AMI
+            step-1: select oyur AMI and go to actions 
+            step-2: copy AMI and select destination region 
+            step-3: Incase you want to transfer your data in encrpyted way simply click on Encrpytion option.
+                    (If you enable Encryption option you will pay for Extra charge because your data copied secure way)
+            step-4: Then click on copy AMI
+            
+    Types of AMI's:
+      
+          My AMI':
+                --> This are all customised AMI's.
+                --> Incase we create any customise AMI's or templates that templates are available in MY AMI.
+          AWS Marketplace:
+                --> This AMI's also provided Amazon.
+                --> This AMI's contains default OS and including some application configurations also.
+                --> Incase licensed AMI's their will charge resource utilisation and licensed utilisation.
+          Community AMI's:
+                --> This AMI's are provided Amazon.
+                --> This AMI's contains only basic OS installation and basic Applications only.
+                --> And based on your needs we can configure your Applications.
+                Amazon provided Community AMI's:
+                        1. Amazon Linux.
+                        2. Cent Os.
+                        3. Debain.
+                        4. Fedora.
+                        5. Gentoo.
+                        6. openSUSE.
+                        7. Other Linux.
+                        8. Red Hat.
+                        9. SUSE Linux.
+                        10. Ubuntu.
+                        11. Windows.
+              
+--> If you want to take your entire virtual machine backup and we need to create your own customised AMI's.
+--> If you want to take AMI's for your virtual machine then that AMI contains entire your virtual machine configurations. 
+
+Creation of Customised AMI:                                                                                       Pay for Storage Charge..:
+
+      step-1: Select your Instance.
+      step-2: Go to Actions.
+      step-3: Click on Image.
+      step-4: Click on create Image.
+            --> By default click on image entire your instance configurations.
+            --> Once at the time of AMI creation by default your running instance automatically reboot.
+      step-5: If you don't want to reboot simply click on No Reboot.
+      step-6: To check your customised Images are created or not.
+            --> Simply Click on Images
+            --> Goto AMIs.
+
+      --> This AMI's contains your Operating system Activities and also your Applications also. 
+      # Your AMI created Object oriented Storage.
+      --> By default Your AMI created under S3 location (object level storage).
+
+Launch your instance by your own customised templates:
+      step-1: CLick on Launch instances.
+      step-2: Click on my AMI's.
+      step-3: You have your own customised AMI's and then if you want simply select it.
+      step-4: And launch your instance.
+
+Create snapshot:
+      step-1: Go to volumes and select it
+      step-2: Go to Actions.
+      step-3: Click on Create snapshot.
+      step-4: To check this snapshot is created or not.
+            --> go and check snapshot option.
+            --> By default EC2-service automatically created one snapshot for your root volume.
+      step-5: Restore snapshot.
+            --> convert your snapshot to volume.
+            --> select your snapshot and go to action then we have a option "create volume".
+            
+
+
+Difference between AMI's and SnapShot..:
+      --> Both are take a snapshots.
+
+      AMI's: 
+            --> It will take entire backup for your entire Virtual machine.
+            --> Including your operating system, volumes, Applications also.
+            --> By using AMI we will create new instance.
+
+      SnapShot:
+            --> It will take a snapshot for specific things only.
+            --> By using snapshot we will not create new instance. 
+            For example:
+                  If you restore one volume backup and attached to our volume to our instance.
+            --> But By default snapshot doesn't supported live environment.
+            --> Snapshot is only for your volume backup purpose.

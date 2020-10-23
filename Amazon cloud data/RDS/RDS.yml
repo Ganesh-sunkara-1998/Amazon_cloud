@@ -1,0 +1,159 @@
+##########################################################............. RDS(Relational Database service)............################################################################################
+RDS(Relational Database service):
+    By using this service we can manage entire end to end database .
+    Database:
+      . A database is a collection of information that is organized so that it can easily be accessed,managed,and updated.
+    Relational Database:
+      . which is also called Relational database management systems (RDMS) or Structed Query language (SQL) database.
+      . The most popular of these are "Microsoft SQL server","Oracle Database","MySQL",and IBMDB2.
+      . which is mostly used to store data for web applications, typically as part of the popular LAMP stack.
+    Non-Relational Database:
+      . Also called "NoSQL" databases
+      . The most popular being "MongoDB","DocumentDB","Cassandra","Coachbase","HBase","Redis" and "Neo4j".
+      . These databases are usually grouped into four categories:-
+          . Key-value stores
+          . Graph Stores
+          . Colum stores
+          . And Documentation Stores
+
+  . Amazon Relational Database service (RDS) is a web service that makes it easier to setup, Operate, and scale a relational database in the cloud.
+      including License.
+  . You can have Automated backups performed when you need them, or manually create your own backup snapshot. you can use these backups to restore a database.
+  . you can get high availability with a primary instance and a synchronous secondary instance that you can fail over to when problems occur.
+
+  DB-Instances:
+    . A DB Instance is an isolated database environment in the cloud
+    . Each DB instance runs a DB engine. (Your database template)
+    . Amazon RDS currently supports the "MYSQL","MariaDB","PostgreSQL","Oracle",and "microsoft SQL" server DB engines.
+        . And Also Amazon also created own database which is called "AWS Aurora".
+        . Aurora and MYSQL both are same by using mysql template amazon has configure and setup own database. 
+    . The Computation and memory capacity of a DB Instance is determined by its DB Instance class.
+    . DB Instance storage comes in three types:-
+          . Magnetic
+          . General Purpose (SSD)
+          . Provisioned IOPs (PIOPS)
+    . You can your DB instances in several Availability zones, An option called Multi-AZ deployment.
+
+Ref Link:
+        https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
+
+  DB Parameter Group:
+    . DB parameter groups act as a container for engine configuration values that are appiled to one or more DB instances.
+
+  High Availabilty:
+      . Amazon RDS provides high avaialbility and failover support for DB instances using multi-AZ deployments.
+      . Multi-AZ deployments for Oracle,PostgreSQl,MYSQL and MariaDB Db instances use Amazon's failover technology.
+      . SQL DB instances use SQL server mirroring.
+         . If you choose SQL server Mirroring by default it will maintain primary and secondary database instances.
+      . In a multi-AZ depolyment, Amazon RDS automatically provisions and maintains a synchronous standby replica in a different Avaliability zone.
+      . The High Avaliability Feature is not a scaling solution for read-only senarios.
+      . You cannot use a standby replica to server read traffic.
+      . To service read-only read only traffic, you should use a Read Replica. 
+
+  Read Replica:
+      . You can reduce the load on your source DB instance by routing read queries from your applications to the Read replica.
+      . Creating Amazon RDS Read Replicas either in the same AWS region as the source DB instance, or in a seperate AWS region.
+      . The Read Replica Operates as a DB Instances that allows only read-only connections.
+
+RDS setup:
+# Aws console >> Database >> create database >> choose database method >> Database Options >> templates >> Give some Authentication details for DB 
+# click on Create Database {It will take around 10-15 mins to setup your database} >> Login through RDS endpoint >> 
+  . Login RDS from EC2:
+      . Install mysql client package # apt-get install mysql-client
+      # mysql -h <your-RDS-endpoint> -P 3306 -u dbmaster -p
+  . Login RDS on windows:
+      . Install RDS client package. # mysqlbench
+
+SQL Database:
+    list of databases: # show databases;
+    switch in to particular database: # use <your database name>;
+    Check inside database db list of tables: # show tables;
+    Create Table in side database: # CREATE TABLE Students (studentID int, LastName varchar(255), FirstName varchar(255), City varchar(255));
+    Insert Records into table: # INSERT INTO  Students (studentID, LastName, FirstName, City) VALUES ("001","Kumar","Anil","Singpure")
+    Retrive records from your table: # select * from Students;
+    Making specific queries: 
+        . Select StudentID from Students WHERE (LastName="Reddy")
+        . Select StudentID, city from Students Where (LastName="Reddy")
+    Delete tables: # drop tables Students;
+    Switch back to mysql query to backend command prompt: # exit;
+      
+RDS-instance Modify:
+# select your DB >> click on modify >> 
+
+  Database creation method:
+      Standard Creation:
+          . You set all of configuration options,including ones for availiability,security,backups,and maintenance.
+      Easy Creation:
+          . Use recommended best-pratice configurations. some configuration options can be changed after the database is created.    
+
+  Database Options:
+      . MYSQL
+      . MariaDB  
+      . PostgreSQL
+      . Oracle
+      . microsoft SQL
+     # oracle,PostgreSQL,Server microsoftSQL,MariaDB all thise are pay for licensed charge.
+      > Above all database we will get a billing resource utilisation and licensed charged both charges are apply.
+
+    Templates:
+        . Production 
+        . Dev/Test  
+        . free tier
+        # Production Dev/test you will pay for charge.
+        > Production and Dev/Test you will get "multi-AZ feature" and "Read Replica feature"
+
+--> MySQL and Amazon Aurora default port number is "3306" .
+--> By default RDS provided upto 35 days backup retention period. based on number of days backup you will pay for charge.
+--> "Enable enhanced monitoring" and "Logs export" both are pay for charge.
+--> RDS service automatically Upgrading your exisiting database services.
+--> RDS by default we don't have a operating system Activities
+
+Multi agent: It means it will provisioning to database instance one is for main instance and another one is standby instance.
+      . Whenever Your Primary instance is fail standby instance acts as a primary and manage our data.
+      
+Read Repica: Incase if you reduce incoming Application node to our primary database we can create read replica data. 
+      . your replica database query's can handle read query's also.
+  
+Create Read Replica:
+    # Actions >> Click on read replica >> choose your read replica region 
+Manual Backup DB Instance:
+    # Actions >> click on take snapshots >> 
+      . It will take intime database 
+Automactic DB Backup:
+  # Actios >> Backup >> 
+
+Parameter Group: 
+  . It will allows to create and allows your own customised database.
+  . Once if you create database group for parameter group we can modify by default your database engine parameters.
+  # select your db group >> click on parameter group >> 
+  . Any database by default more than hundreads of parameters are there.
+  . we can change default time zone From UTC to India.
+
+Subnet Group:
+  # subnet Group >> create subnet group >> add subnets 
+
+
+Ref Link: https://aws.amazon.com/rds/faqs/
+##########################################################............. RDS(Relational Database service) New data ............################################################################################
+
+
+
+Burst Performance:
+    . Larger volumes have higher base performance levels and accumulate I/O credits faster. 
+    . I/O credits represent the available bandwidth that your General Purpose SSD storage can use to burst large amounts of I/O when more than the base level of performance is needed. 
+    . The more I/O credits your storage has for I/O, the more time it can burst beyond its base performance level and the better it performs when your workload requires more performance. 
+    . This initial credit balance is enough to sustain a burst performance of 3,000 IOPS for 30 minutes.
+    . When your storage requires more than the base performance I/O level, it uses I/O credits in the I/O credit balance to burst to the required performance level.
+    . Such a burst goes to a maximum of 3,000 IOPS.
+    . Storage larger than 1,000 GiB has a base performance that is equal or greater than the maximum burst performance.
+    . The burst duration of your storage depends on the size of the storage, the burst IOPS required, and the I/O credit balance when the burst begins.
+                                      
+                                      
+                                      (Credit Balance)
+           Burst duration =  --------------------------------------
+                              (Burst IOPS) - 3*(Storage size in GiB)
+
+Ref Link: https://aws.amazon.com/blogs/database/understanding-burst-vs-baseline-performance-with-amazon-rds-and-gp2/
+Ref link: https://www.metricly.com/ebs-burst-balance-aws/
+Ref Link: https://sallelespoir.be/docs/c55e08-rds-burst-balance
+Ref Link: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html

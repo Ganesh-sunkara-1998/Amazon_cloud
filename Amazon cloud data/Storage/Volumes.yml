@@ -1,0 +1,373 @@
+######################################################...........Volumes..............######################################################
+            # Storage................
+                                                                                                                        Free Tier Services:
+Volumes:
+--> Amazon provided two types of storages they are:-
+              1. Block level storage
+              2. Object level storage
+--> Volumes are supported and manage block level storage.
+--> Based on logical volume management concept amazon provide block level volumes. 
+--> Based on LVM amazon created and manage volumes.
+--> LVM(Logical Volume Managment) fallows traditional file system process.
+--> Root volume take care by entire your operating system boot volumes. if you delete this volume you unable to access your instances.
+# volumes are created zones specific.
+  
+########################################********************Traditional Process************************########################################################
+
+        --> Incase we take it one machine either virtual machine or physical machine in that machine we attach one hard disk is required to install and manage your operating system activites.
+        --> minimum 8gb required to install and manage your linux operating system activities. incase windows we need atleat 30gb required.
+        --> Hard disk is a physical device by default we are not allowed read and write operations on your physical hard disk.
+        --> In admin people do incase we are connect your hard disk in to virtual or physical machine (or) server they will convert to physical device to logical device.
+        --> To convert physical hard disk in to logical hard disk mainly two ways they are.
+              * we can convert entire your physical hard disk device to logical hard disk and we can able to manage.:
+                --> instead of spilting you can use entire your operations on single hard disk devices. (or) your entire data will be stored on single hard disk device.
+                --> incase unfortunetly your hard disk is corrupted you lose entire data. your operating system and your applications are also down suddenly.
+                --> Even single block is corruputed you lose entire data.
+
+              * But as per security reasons we will spilt that entire hard disk into multiple devices. :
+                --> Even you splited your hard disk multipuly technicaly we called it as # partition.
+                --> Again those partition are also called as  physical disks. or standard partition.
+                --> Again we are going to convert those physical partitions in to logical partitions and that logical partition is called as # file system.
+
+Basic Structure of Traditional process:
+
+                      physical Hard disk/physical partitions
+                                      |
+                                physical volumes  (splited multiple standard partitions)
+                                      |
+                                logical volumes (based on your requirement we will create multiple logical volumes)-(still it is a raw volume we no need to allow read and write operations on that volume)
+                                      |
+                                File System (By using that file system you can manage our data)
+                                      |
+                                Add mount point to the file system.
+                        
+                  --> You can't Extend or decrease volume size.
+
+
+What is File System..?:
+    --> File System is a logical container it holds and maintained your files and directories information.
+    --> only your file system provided some space as like your hard disk.
+
+--> After converting file system those file system doesn't allows to manage our operations directly read and write opertions. or upload and download also.
+--> By default we doesn't have a permissions to access this file system.
+--> That's way we can create one mount point for this file system.
+
+Creating mount point for file system...:
+
+        step-1: create a one empty directory. by using #mkdir
+        step-2: after creating directory we can attach the directory to file system or (we can mount this file system.)
+        --> Once you attach this empty folder to file system it's acts as a default mount point to your file system.
+        --> so after attaching default mount point to our file system. we can manage all your data.
+        --> whatever changes we can modify or whatever data we can upload we can manage all read and write operations through this mount point.
+              for example:
+                  --> we can attach this mount point to existing file system. let us assume this file system contains total 20GB size. 
+                  --> so once we can attach this mount point to your file system so this mount point contains total 20GB size.
+                  --> incase we can upload any data in empty directory by default that data stored under file system.
+                  --> Because file system doesn't allows read and write operations directly.
+                  --> Based on your file system total space your empty directory can manage your data if incase that empty diretory acts as a mount point.
+
+--> But this is the traditional ways before LVM (Logical Volume Management) administrators are fallows this process.
+
+--> Incase you have some logical volume [50GB] but after some days we need to extend that volume [50GB] to [100GB] at same file system. 
+--> Incase you fallow traditional file system method we don't have a option to extend the volume.
+--> Incase you want to extend again we attached physical hard disk and converted in to logicial partition and convert file system. [100GB]. and copied old data in to newly created file system. then we can address.
+--> But we manage those actitivies we need a downtime for our disk.
+--> Before take a downtime and copied our old data into newly created file system.
+--> On flow it is not possible. defiently we need a downtime. to extended standard partition size to new partition size.
+*** To overcome extended standard partition size to new partition size through downtime we interduced LVM (Logical Volume Management) concept. ***:
+*** instead of traditional process we can choose LVM (Logical Volume Management).***:
+
+############################################............Traditional Process steps...........##########################################################################
+
+Create a standard physical partitions:
+
+       step-1: Create one volume and that volume contain around 10GB size of memory.
+       step-2: Added hard disk shows #xvdf 
+       step-3: To create a partition at particular hard disk #fdisk /dev/xvdf
+       step-4: Hit enter and after click on "m" to display list of information.
+               --> To display specific hard disk information. click on "p".
+      step-5: click on "n" to add new partition.
+              --> To select partition type either primary or secondary. mostly we can use primary partition.
+              --> After that partition number.
+              --> sectors are default.
+              --> size as we required (+5G)
+      step-6: To save and quit your partition. simply click on #w
+      step-7: we can check disk infromation #fdisk -l
+              --> it shows partition from main hard disk #/dev/xvdf1
+                xvdf --> hard disk where you added.
+                xvdf1 --> first partition pf your hard disk with some memory.
+      --> Incase your hard disk volume is around 10GB of size. and 1st partition is 5GB alloted remaining 5GB is free but we can access only 4.75GB of size.
+      some 0.24GB allocated to your sector size.
+
+Create a physical volumes and logical volumes:
+
+      step-1: Before Creating Physical volumes to list out all physical volumes #pvs
+              --> once we can convert standard physical partitions to physical volumes we will get a list of physical volumes.
+      step-2: To convert standard partition to physical volume simply use this command #pvcreate /dev/xvdf1 /dev/xvdf2
+      step-3: After converting physical volumes we need to add those volumes into volume group.
+      step-4: To check list of volume groups simply use #vgs
+      step-5: To create one volume group and added those physical volumes into the group simply #vgcreate <volume-groupname> /dev/xvdf1 /dev/xvdf2
+      step-6: To check logical volume groups #lvs
+      step-7: To create a logical volumes simply #lvcreate -L +2G -n <volume-name> <volume-group>
+              --> Logical volumes are created under volume group.
+              --> But still it is normal volume it is not a file system.
+              --> it doesn't allows read and write operations.
+      --> If you convert physical volume to logical volume we need to format our file system.
+
+Make a file system and mount point:
+
+      step-1: To make a file system simply use #mkfs.ext4 /dev/demovg/demolv
+                  --> default file system type ext4. 
+                  --> Absolute path location for your logical volume.
+      --> Once we are running above command it is converted normal partition to logical partition. which is called file system.
+      --> To list out logical volume information morely #lvdisplay
+      step-2: To create one empty directory by using #mkdir /<directory-name>
+      step-3: To attach your empty directory in to file system or mount it simply use # mount /<absolute path location of logical volume> /<empty directory-name>
+            #mount /dev/demovg/demolv /appdata
+      step-4: To check your empty directory is mounted or not. then checked it list of mount points #df -h
+      --> 3.0M space is allocated as reserved space and it's used in some critical conditions.
+      --> By default your operating system allocated 10% of space as reserved space.
+      --> Whenever your file sytem is going to full at that time your operting system used that reserved space and manage your activites.
+      step-5: Now we are going to add some data in your file system before simply #cd < directory-name where you mounted > 
+              --> go to your file system directory #cd /appdata
+              --> your appdata managed upto 2GB size of data. 
+              --> If you create files under appdata those files are stored in file system.
+      --> Once your file system terminated automatically your appdata also deleted.
+      step-6: If you want to disconnect file system to your mount point simply use #umount /<mounted directory-name>
+                  #umount /appdata
+      step-7: To add your data under appdata directory. because it is acts as a mount point.
+
+      -->Again we can check your file system is mounted or not simply use #df -h (disk free space -human readable format)
+
+--> Again we can umount your directory by default it is normal directory it will not connected to our file system.
+--> if you want to resize your file system and logical volume before we need to umount existing file system (take down time) and then extend size of your file system space.
+
+Extend your file system space or volume:
+      --> Before we need to check that new space is available or not in that volume group.
+      --> To check volume group information #vgs
+      --> To extend your volume simply #lvextend -L <new space size> <absolute path of your file system>
+                  #lvextend  -L +2G /dev/demovg/demolv
+      --> To check size of your volume #lvs
+      --> But you check file system size it shows old space. To check file system information #df -h
+      --> so we need to update your file system level also #resize2fs -f /dev/demovg/demolv
+
+if you umount directory to your file system. file system is available but we mounted some directory and manage your operations.
+
+
+--> Amazon provided logical volume directly we no need create any physical volumes and do above operations.
+--> simply create logical volume and attach your required your EC2-instance convert your logical volume to file system and mounted it and perform your opertions.
+--> rest of things are going take care Amazon.
+
+
+########################################.................Logical Volume Management Process....................########################################################
+
+--> LVM allows,resize and shink your existing file system.
+--> Old data space is not distrub it will extended space or your volume only. 
+--> let us take one example by using LVM concept we can create 50GB file system and we have mounted 50GB file system to some speific mount point.
+--> After some time we want to extend 50GB file system to 100GB file system  without taking any down time. we can extended file system onflow.
+--> LVM is a mechanism to virtualise your disk. incase we want extend or decrease your volume we can go ahead and do as you required.
+
+Basic Structure of LVM (Logical Volume Management):
+
+                      physical Hard disk/physical partitions
+                                      |
+                                physical volumes  (splited multiple standard partitions)
+                                      |
+                                volume group (physical volumes are attached to either existing volume groups or new volume group)
+                                      |
+                                logical volumes (based on your requirement we will create multiple logical volumes)-(still it is a raw volume we no need to allow read and write operations on that volume)
+                                      |
+                                File System (By using that file system you can manage our data)
+                                      |
+                                Add Mount point
+
+                      --> Because of volume group we can Extend or decrease your volume.
+
+--> Generally hard disk shows like  #/dev/sda,/dev/sdb.... 
+       --> It maintains device (hard disk,CD-ROM,removable disk) information #/dev
+       --> In linux your hard disk shows like. 
+                                                  1st-hard disk #/sda 
+add 2nd- hard disk on same server it shows like.  2nd-hard disk #/sdb
+
+--> mainly we have three types of disks in our data center level based on disk type those hard disk namings are decided.
+
+Disk Identifications:
+    --> Different type of Disks will be having different intials in linux.
+            * IDE drive will be shown as #/dev/hda
+            * SCSI drive will be shown as #/dev/sda
+              ( SCSI -- Small Computer sytem integration).
+            * Virtual drive will be shown as #/dev/vda
+    --> This is the physical disk vendor types 
+
+Partition Identifications:
+      --> incase SCSI type of disk are showing like 
+        1st partition- #/dev/sda1 
+        2nd partition - #/dev/sda2
+
+--> To list of hard disk information simply use this command #lsblk
+
+      --> Basically default hard disk #xvda (virtual disk)
+                 or added hard disk shows  #xvdf (virtual disk)
+
+      --> In data center level those "xvda" or "xvdf" hard disks are SCSI type of disk like "sda" or "sdf".
+      --> To check it local level hard disk checked it on default dashboard 
+      --> Genrally SCSI type of disks are provided majorly.
+
+                      physical hard disk --> #/dev/sda
+                              |
+                      splited hard disks --> #/dev/sdb1 and #/dev/sdb2.... 
+
+--> Basically Amazon provided virtual storage or virtual disk. that's way it shows in linux "xvda" or "xvdf".
+
+                        logical hard disk --> #/dev/xvda
+
+--> we don't have a direct physical data center access.
+--> By default our ubuntu machine automatically created one volume and that volume allocated 8GB size. and that it is 1st hard disk of your instance.
+--> Automatically our EC2 service attached one 8GB size of  SCSI disk and also it has created one partition and it has formatted and attached to main mount point. which is called "/" --> main root directory.
+--> Main root directory conatins around total 8GB size. and that 8GB contains all our kernel, operting system modules and related information.
+--> And that is dedicated to your operaing system activities.
+
+--> To list of hard disk information simply use this command with some more metadata information #fdisk -l
+
+What is Partition..?:
+      --> Partitioning is means to divide single hard drive to many logical drives.(physically logical drives).
+
+      Disk Partition Creteria:
+
+            --> whenever we can choose any type of disk. By default it allows to create upto 4 primary partitions.
+                  --> most of the senarios we can choose 3 partitions for primary. 4th partition as Extended partition.
+                  --> Incase we can choose Extended partition it allows to create again more than 4 partitions.
+                  --> Extended partition we can created upto 15 partition.
+                  --> After allocated size of primary partition. remaining size is allocated Extended partition. and that Extended partition is again divided upto 15 partition. 
+            --> Any hard disk around 512MB size is automatically allocated to MBR(Master Boot Record).
+            --> MBR contains two important utilities.
+                                    1. IPL (Intital Program Loader) --> responsible for booting the operating system because it contains boot loader.
+                                    2. PTI (partition Table Information)
+--> Basically Amazon allocated to you virtual type of storage that's way in operating system level it shows #/dev/xvda
+
+File system..:
+      --> It is a method of storing the data in orgainzed fashion on the disk. and it is logical container it holds your files or directory meta data information.
+      --> It can manage and organise your data in your entire storage.
+      --> At the time of file system creation by default it assign read and write permission into that file system.
+
+Mounting..:
+      --> Attaching a directory to the file system in order to access the partition and its file system is known as mounting.
+      managing mounting files:
+            --> This file stores the information about temporary mounting information. #/etc/mtab
+                  --> It temporary attaching your mount point in to your file system. # mount <file-system-name> <mount-point>
+            --> Incase you make it permanent as mount point and file system. we can add some fields under #/etc/fstab
+            --> This file which is keeps information about the permanent mount point. 
+            make it mount point as permanent...:
+                  --> open fsatab by using  #vim /etc/fstab
+                  --> update your mount point details.  #/dev/sdb1    /root/awsdata   ext4    <defaults>   0 0  
+            #<file-system-name>< 4-tabs> <file system mount point> <3-space> <type of file system> <3-spaces> <permission-default(rw)> <3-spaces> <back-up(0)> <file system-checking (0)>
+            --> generally this fstab excuted at the time of system reboot it will not updated immediately. those changes are updated at the time of system reboot or restart.
+            --> At the time of system restart or reboot your kernel automatically Executed those fstab              
+            --> <file-system checking> --> for example some times your file system is corrupted or some minor blocks are corrupted. 
+            --> Incase (0 to 1) option changes automatically at the time of your system reboot your file system checking continously incase it will find any errors it will automatically reslove.
+                        "0" means no file system checking. 
+                        file system fields are :
+                                    1. file system name
+                                    2. mount point
+                                    3. type of the file system
+                                    4. permissions.(defaults)
+                                    5. back-up.(0)
+                                    6. file system checking (0)
+            
+            --> Only attachments are permenent modifications are updated automatically.
+
+--> Any partition that partition ID shows "83" means that is a standard partition.
+--> Before use standard partition we need change that standard partition into LVM supported partition that's way we need to change partition ID.
+
+################################################.......Logical Volume Management Process......##################################################
+     
+      --> Because of logical volume management process we no need to take a down time (no need umount file system).
+
+Migration of LVM(Logical Volume Management):
+            
+            step-1: Change Partition Id
+
+                        Change partition ID:
+                                    --> To change partition ID then use #fdisk /dev/sda
+                                    --> press "m" for help.
+                                    --> press "t" To change partition ID
+                                    --> which partition we need to change simply give partition number.
+                                    --> hexa code type if you don't know the code ID's simply press "L".
+                                    --> And change Linux partition Id "83" to "8e".
+                                    --> And Saved it. press "w".
+
+                              --> We need to change partition id to "8e" otherwise LVM doesn't supported.
+                              --> After Add some data it is not a standard partition it is a file system. so we unable to change file system id.
+                              --> After converting linux LVM supported partition but it is still physical devices. by default we are not supported any data.
+                              --> Now we are going to create logical volume by using those LVM supported partitions.  
+
+                     --> After Updated new partition id then it will updated on operating system.
+                     --> we need to update kernel level.
+                     --> To check partitions are updated under kernel level or not simply use #cat /proc/partitions 
+                     --> Kernel will decide and shedule our activities.
+            step-2: To updated those LVM supported partitions under kernel level simply update entire hard disk  #kpartx /dev/sdb
+                        --> Restart your existing partitions once you restart then it will updated partitions also.
+                        --> To restart Exisiting Instances simply #init 6
+            step-3: To create Physical volumes simply use commands #pvcreate /dev/sda1 /dev/sda2
+            step-4: To check list of physical volumes by using PVS command #pvs
+                    --> To display physical volumes meta data information too #pvdisplay
+            step-5: To create logical volume group and add those physical volumes too simply use #vgcreate awsgroup /dev/sda1 /dev/sda2
+                     --> To check list of volume groups information #vgs
+            step-6: Based on your requirement we have to create logical volume.
+                        --> To create logical volume simply # lvcreate -L +2G -n <lvname> <groupname>
+                        --> To check your Logical volume is created or not simply use #lvs
+                        --> If you want to display meta data information too simply use #lvdisplay
+            step-7: But we are not use logical volume then we need to create file system.
+                        --> To make file system simply use this command #mkfs.ext4 /dev/awsgroup/awslv
+            step-8: Again file system also no use after creating file system to make mount point.
+                        --> create one empty directory and attached to file system then it will acess as a mount point.
+                        --> To mount file system #mount /dev/awsgroup/awslv /awsdata
+                        --> To check to your directory acts as a mount point or not simply #df -h
+            step-9: To Extend particular file system simply use #lvextend -L +1G /dev/awsgroup/awslv
+                        --> To check logical volume size #lvs
+                        --> But to check file system size it will not updated then update file system.
+            step-10: To update filesystem size simply use #resize2fs -f /dev/awsgroup/awslv
+
+Amazon created volumes:
+
+      step-1: create logical volume.
+      step-2: Attach your EC2-instance.
+      step-3: convert to file systems and used it.
+
+Amazon directly provided Logical volumes backend one script is running and those script was maintained those physical volumes and partitions.
+--> Incase your applciation is running on premises data center then we can fallow all those steps. as partitions, volume groups and etc.
+
+
+
+
+###################################################................... New data 2.0....................##############################################################################
+
+--> To check mount points information # df -h
+--> To check memory size #free -m
+To extend the partition on each volume: #  sudo growpart /dev/xvda 1
+Command to extend the file system on each volume: # sudo xfs_growfs -d /<mountpoints>
+listed the available free space of your system: # df -H command
+Reads the sysfs filesystem to gather information: # lsblk command       
+ref link: https://www.javatpoint.com/linux-df#:~:text=Linux%20df%20Command,the%20file%20system%20is%20mounted.
+    
+Differnce between "growpart" and "extend" command when you increase the partition size:
+      Extend:
+            Changing the volume affects only the ‘physical capacity’ but your system partitions stays the same.
+      growpart:
+            . In order to resize the partition, you have to execute the growpart command
+            . This will apply the full capacity of our disk to the targeted partition.
+
+Ref link: https://medium.com/benextcompany/increase-ec2-instances-volume-size-911a4e363df6
+
+
+
+
+
+
+
+      
+
+
+
+
+

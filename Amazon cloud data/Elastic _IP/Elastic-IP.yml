@@ -1,0 +1,78 @@
+######################################################...........Elastic Internet Protocol ..............#################################################################
+
+Networking......:                                                                                                           Payed Service....:
+                                                            # If you not Assign this Elastic Ip to any Instances  you will pay for every second bill
+                                                            Every Region Amazon provided 5 free Elastic IP address. After allocation 5 instances from 6th IP we will pay for charge.:
+
+Elastic IP-Address:
+    --> It can't be changed every time. mainly it is used in production environment.
+    --> we need to Enable Elastic IP and Attached to your Instance.
+    --> This IP is allocated to Dedicately.
+  
+  --> Generally we have two type of IP's are there 
+            Shared Resources:  This IP will changed every time # public IP
+            Dedicated Resources: This IP will can't be changed it will allocated to your instances. # private IP
+  --> If you want to enable static public IP address we can choose # Elastic IP address
+  Elastic IP address: It is a Public Static IP address.
+  --> By default we don't have any Elastic IP address. if you want we can raise a request to amazon.
+  --> Amazon dedicately provided Elastic IP your specific Account.
+  # Elastic IP's are related to region based.
+  --> Once you Allocate Elastic IP address Amazon created on Public IP address for you it is also called white list IP.
+  --> After Launching your Instances instead of your instances public IP we can choose Elastic IP address.
+  --> After Allocated this Elastic IP to your Instances by default it will not modified. even you stop or restart.
+  --> For Elastic Ip allocation and Deallocation we no need to take any downtime.
+
+Allocated Elastic IP to Your Instance:
+
+    step-1: Launch your instances.
+    step-2: Go to Networks and security and click on actions.
+    step-3: click on Associate Elastic IP address.
+    step-4: choose Instance type and click on Instance id and click on Associate.
+    step-5: Install apache package # apt-get install apache2
+    step-6: To check service is running or not # service apache2 status
+    step-7: To check particular port number is running or not # netstat -ntulp
+    step-8: simply copy that Elastic IP address and search on web browser. 
+
+Deallocated Elastic Ip to your instances:
+
+      step-1: Simply go to Elastic Ip unser Network ans security.
+      step-2: Go to Actions and click on Deassociate Elastic ip address.
+      step-3: To realese your Elastic Ip from your account click on "Releases Elastic Ip address"
+
+Elastic IP:
+
+  --> An Elastic IP address is a static IPv4 address designed for dynamic cloud computing.
+  --> An Elastic IP address is associated with your AWS account.
+  --> We currently do not support Elastic IP addresses for IPv6.
+  --> To use an Elastic IP address, you first allocate one to your account, and then associate it with your instance or a network interface.
+  --> By default, all AWS accounts are limited to five (5) Elastic IP addresses per region.
+
+Difference Between IPv4 and IPv6:
+
+    IPv4:
+        --> IPv4:- Internet Protocol Version 4. 
+        --> It contains 4 Numerical Numbers.
+        --> Ip address contains total 32 bits.
+        --> Each number divided one "." like 192.168.0.5 which is called octa notation.
+        --> Each number or digit contains 8-bits as per binary formats. 8+8+8+8 = 32 bits.
+        --> Any type of IP address contains 32 bits it means it is supported "IPv4" IP address.
+        --> Most of the real time senarios we are using this IPv4 IP address.
+    --> Your system can under binary language but it is can't understand binary language.
+
+    IPv6:
+        --> IPv6:- Internet Protocol Version 6.
+        --> It contains 4 Numericals.
+        --> It is latest verison of IPv4.
+        --> It contains total 128 bits.
+        --> In real time we are not using still only few environment we are using.
+        --> It shows like 192::x011::192
+
+
+
+
+
+
+  
+
+
+

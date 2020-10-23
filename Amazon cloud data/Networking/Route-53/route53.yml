@@ -1,0 +1,162 @@
+#######################################################............ Route 53..........######################################################################################################
+
+Route 53:
+
+  --> Amazon Route 53 is a highly available and scalable Domain Name System (DNS) web service.
+  --> Translating names like www.example.com into the numeric IP addresses like 192.0.2.1 that computers use to connect to each other.
+
+  You can use Route 53 to perform three main functions:
+        Register domain names
+        Route internet traffic to the resources for your domain
+        Check the health of your resources
+
+  --> You can use Amazon Route 53 to register new domains, transfer existing domains.
+  --> Route traffic for your domains to your AWS and external resources, and monitor the health of your resources.
+
+Top level Domain:
+  --> Top-level domain (TLD) refers to the last segment of a domain name
+  --> The Internet Corporation for Assigned Names and Numbers (ICANN), is the entity that coordinates domains and IP addresses for the internet.
+
+  TLDs are mainly classified into two categories:
+          Generic TLDs
+          Country-specific TLDs 
+  
+  Examples of some of the popular TLDs:
+    .com, .org, .net, .gov, .biz and .edu. 
+
+  Some of the TLDs and their explanations are as follows:
+      .com - Commercial businesses
+      .org - Organizations (generally charitable)
+      .net - Network organizations
+      .gov - U.S. government agencies
+      .mil - Military
+      .edu - Educational facilities like universities
+      .th - Thailand
+      .ca - Canada
+      .au - Australia
+
+Fully Qualified Domain Name (FQDN):
+    Take www.GoDaddy.com, for example. The first element and domain level of the FQDN is the top level domain (TLD), which, in this case, is “.com.” Within the TLD, “GoDaddy” is the assigned domain name/second-level domain. Lastly, “www.” is the hostname.
+
+DNS Management:
+    If you already have a domain name, such as example.com, Route 53 can tell the Domain Name System (DNS) where on the Internet to find web servers, mail servers, and other resources for your domain.
+
+Hosted Zones:
+    It is a container that holds information about how you want to route traffic for a domain, such as example.com, and its sub-domains.
+
+Features of Route 53:
+  Easy to register your domain: We can purchase all level of domains like .com, .net, .org, etc. directly from Route 53.
+  Can be used with other AWS Services: Route 53 also works with other AWS services. It can be used to map domain names to our Amazon EC2 instances, Amazon S3 buckets and other AWS resources.
+  Easy to use: It is easy to sign-up, easy to configure DNS settings, and provides quick response to DNS queries.
+  Health Check: Route 53 monitors the health of the application. If an outage is detected, then it automatically redirects the users to a healthy resource.
+
+How Internet Traffic Is Routed to Your Website or Web Application:
+
+        --> Internet Protocol version 4 (IPv4) format, such as 192.0.2.44
+        --> Internet Protocol version 6 (IPv6) format, such as 2001:0db8:85a3:0000:0000:abcd:0001:2345
+
+    --> You register the domain name that you want your users to use to access your content.
+    --> After you register your domain name, Route 53 automatically creates a public hosted zone that has the same name as the domain.
+    --> To route traffic to your resources, you create records, also known as resource record sets, in your hosted zone.
+      Each record includes information about how you want to route traffic for your domain, such as the following: 
+            Name: The name of the record corresponds with the domain name (example.com) or subdomain name (www.example.com, retail.example.com)
+            Type: The record type usually determines the type of resource that you want traffic to be routed to.
+                  For example, to route traffic to an email server, you specify MX for Type. To route traffic to a web server that has an IPv4 IP address, you specify A for Type.
+
+          Supported DNS Record Types:
+                A:          The value for an A record is an IPv4 address in dotted decimal notation.(192.0.2.1)
+                
+                AAAA:       The value for a AAAA record is an IPv6 address in colon-separated hexadecimal format.
+                                (2001:0db8:85a3:0:0:8a2e:0370:7334)
+                
+                CNAME:      A (CNAME) Canonical Name Value element is the same format as a domain name.
+                    --> Incase your instances is already configure one DNS settings. but you don'e want to expose your actual domain again you want redirect some other domain to your actual domain.
+                    --> we can redirect one domain to another same format domain we can choose this.
+                    --> your DNS route your traffic if ELB laod balancer then that is routed to instance. at the time we can use this CNAME.
+                
+                MX:         Each value for an MX record actually contains two values, priority and domain name
+                                (10 mail.example.com) --> Incase your application running on some mail server's we can choose this.
+                
+                NS:         An NS record identifies the name servers for the hosted zone.The value for an NS record is the domain name of a name server.
+                                (ns-1.example.com)
+                    --> This name servers are created entire geolocation.
+                    --> Based on your end user request that request can go to that nearest location and retrive your actual data.
+
+                PTR:        A PTR record Value element is the same format as a domain name.(hostname.example.com)
+                SOA:        A start of authority (SOA) record provides information about a domain and the corresponding Amazon Route 53 hosted zone. 
+                              --> It provides your domain configuration details, user details, and administration details.
+                            
+
+      # NS and SOA both are default record sets for your public hosted zone. but those are maintained entire your domain activities. 
+
+       
+Procedure to access your register domain:
+  step-1: update your reposiotory #apt-get update
+  step-2: install apache2 package #apt-get install apache2
+  step-3: Update default documentary root directory path #echo "webapp deployed in ec2-instances"> /var/www/html/index.html
+  step-4: register your domain through route 53 also.
+            step-1: click on route 53.
+            step-2: click on domain registeration.
+            step-3: simply click on register domain.
+            step-4: choose your required domain. and based on domain you will pay for charge.
+  step-5: route your traffic your domain name to webserver.
+          step-1: click on DNS Management.
+          step-2: create hosted zone.
+                  --> give your public hosted zone.
+              --> Once you create public hosted zones by default it will create 2 record sets.
+  step-6: we need to update name servers in hosted accounts.
+              --> Those name servers are created across globally.
+              --> once you got those name servers we need to update those names servers into your domain accounts.
+              --> In your go daddy account we have a option "manage DNS".
+             --> we need to update name servers into your godaddy account. (same times it will take one to 2 hours time)
+        # up to now we can do DNS reslove.
+  step-7: create one record set in value give your instances ip address.
+          step-1: Name of your domain and it is decided to route your domain entire globaly or only development purpose.
+          step-2: choose type of IP address.
+          step-3: TTL (seconds) how many seconds it can route your traffic from backend resources.
+                  --> If you choose 60 seconds within the 60 seconds it will connect and route your traffic from backend resources.
+          step-4: Under value simply give your instance public ip address.
+
+Types of Hosted Zone:
+    Public Hosted Zone: we can route your domain traffic over the internet.
+    Private Hosted Zone: we can route your domain traffic within your vpc or network.
+
+Check the health of your resources:
+    --> Amazon Route 53 health checks monitor the health of your resources such as web servers and email servers.
+    --> You can optionally configure Amazon CloudWatch alarms for your health checks, so that you receive notification when a resource becomes unavailable.
+
+Record sets: This Record sets means how it will route your traffic from your domain to backend resources.
+
+Routing Policy:
+  Simple routing policy: Use for a single resource that performs a given function for your domain.you typically route traffic to a single resource, for example, to a web server for your website.
+                        # It will route your traffic at a time single backend web server or email server.
+                        # Incase your backend resources is down automatically web server is down.
+
+  Failover Routing: Failover routing lets you route traffic to a resource when the resource is healthy or to a different resource when the first resource is unhealthy.
+                    the primary and secondary records can route traffic to anything from an Amazon S3 bucket that is configured as a website.
+                    # Once your primary resources is down or unhealthy immediately it will route your traffic to secondary resources automatically.
+                    # This is for manage for high availabilty purpose.
+                    # based on health check policies it will decide your backend resources is healthy or unhealthy.
+            Before we create Health check poilcies:
+                step-1: click on health checks.
+                step-2: choose EC2-instances.
+                step-3: And provide those end-point details.
+                step-4: Under Advanced configurations. 
+                        Request Interval: --> It will wait for some time never decide immediately.
+                        Failure Threshold: --> After request interval also it will wait some time it will never decide immediately.
+                step-5: If you want to enable notifications when this health check fails. we can choose SNS topic by using cloud watch alarm.
+                step-6: Starting this health check's status is unknown because it is trying to connect backend webserver after we giving time it will shows backend instance is healthy and unhealthy.
+                step-7: And setup failover routing policy.
+            --> But every time you trying to access through your DNS every time that request goes to primary resources.if primary resources unhealthy then your request goes to secondary.
+  
+  Weighted Routing: Weighted routing lets you associate multiple resources with a single domain name (example.com) or subdomain name (acme.example.com) and choose how much traffic is routed to each resource. 
+                --> It is distributed the traffic primary and secondary.
+                --> Every time it is distributed 70 percent request goes to primary and 30 percent request goes to secondary.
+                --> Orelse we can give percentage of traffic we can distrubuted. simply we give percentage number.
+
+  Geolocation Routing: Geolocation routing lets you choose the resources that serve your traffic based on the geographic location of your users.
+                                For example, you might want all queries from Europe to be routed to an ELB load balancer in the Ireland region.
+      To check other country web pages:   webpagetest.com
+
+
+

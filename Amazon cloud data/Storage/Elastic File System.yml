@@ -1,0 +1,100 @@
+##############################################################...... Elastic File System ................##############################################################
+
+        # Storage...................
+                                                                                                          Pay for charga based on storage usage.:
+
+Elastic File System:
+
+          # EFS is a region Based Service.
+  --> Amazon EFS provides scalable file storage for use with Amazon EC2.
+         --> Based on your data Utilisation It is automatically grow and shink your file system. Again we no need extend and decrease file system.
+  
+  --> You can use an EFS file system as a common data source for workloads and applications running on multiple instances.
+          --> EFS file system allows to connect and manage your data for at a time multiple EC2-instances.
+            --> same like in windows share folder. in linux NFS file system. EFS and NFS both are same.
+            --> Amazon developed EFS web services by using NFS (Network File System). 
+
+  --> Lots of application required shared file storage that can be access multiple computers at the same time.
+  --> Building own filesystem it takes time and can be very expensive.
+  --> EFS is shared filesystem for EC2.
+  --> To transfer the data using NFSv4 protocal by default NFS protocal port number is 2049
+  --> It's durable and highly available automatically replicate your data across multiple AZ's in region.
+  --> Time consuming storage administration tasks. 
+
+  --> Share across thousands of instances,SSD devices.
+  --> File System grow and shrink automatically as you add and remove files.
+  --> No need to provision storage capacity or performance.
+  --> You pay only for the storage space you use. 
+
+  Creation of File System:
+      step-1: Go to Amazon service Dash board.
+      step-2: launch 2 EC2-instance.
+                --> With Both are running same Availabiltiy Zones.
+      step-3: Go to EFS dash Board.   
+      step-3:  Choose your VPC Which is Your instances VPC.
+                --> Back ground Amazon maintain VPC's at three Availabilty zones.
+                --> For demo purpose we can choose one avaliabilty zone. which is your instances are running also same Avaliabilty zones.
+                --> Based on VPC your security group will choose.
+
+      step-4: Configure File System Settings.
+                --> If you want "Enable Life Cycle Management" after specific time period data is completed that data is going to under Glacier storage.
+                # generally EFS stores Infrequent Access type storage class.
+
+      step-5: Configure File System Settings.
+                --> Based on Application Performance we can choose throughput Option.
+                  Basically we have 2 type of throughputs.
+                    Bursting:
+                        --> It is sutiable for within 10 file systems to attach and manage it.
+                    Provisoined:
+                        --> It is sutiable for Hundread of file system to attach and manage it.
+                    Compared to Bursting provisonied have more input and output per second (IOPS).
+
+      step-6: Configure File System Settings.
+                Performance mood:
+                    we can choose dependence on your performance we can choose.
+                      General purpose: 
+                          --> It is sutiable for most of file systems.
+                      Max I/O:
+                          --> It is Optimised for Applications where tens, hundreads, thousands of EC2-instances are accessing the file system.
+
+      step-7: Configure File System Settings.
+                Enable Encryption:
+                    --> If you enable Encryption. By default by defualt your EFS file system share your data to EC2-instances through Encrypted way.
+                    --> But we will pay for Extra charge.
+                    --> But your Instance and EFS both are running same VPC we no need to choose Encryption.
+      
+      step-8: Configure Client Access
+              File system Poilcy:
+                  --> Basically this file system is dependence on File System IAM policy.
+                      # IAM poilcies are allows permissions between one service to another service.
+
+      step-9: Review
+              --> Click on create file system.
+              --> By default your file system create one unique id for your file system.
+      
+      step-10: we need to install nfs-client package in your EC2-instance. # apt-get install nfs-common
+                --> Click on " Amazon EC2 mount Instructions (from local VPC)". because your instance and your file system both are running same VPC.
+                --> This package is available on default repository we no need to add any third party repository. 
+                --> Both instances security group inbound rule will allows NFS access.
+
+      step-11: we need to mount your EC2-instance into your file system.
+                --> create a new instances on your instances # mkdir efs
+                --> copy and run the mounted data which is in efs file system. which is mounted NFS data to your directory.
+                --> To check your file system is mounted or not # df -h
+                --> To create some files under mounted directory.
+                --> Then we can mounted same file system on another instances. 
+            # EFS file system is majorly used by to share common data for multiple instances.
+      step-12: We want to remove file system we nned to take a down time.
+                --> Back to root directory # cd ..
+                --> To umount it simply use #umount  /<directory-name>
+      step-13: In console go to actions. and we have a option "Delete file system".
+
+   
+
+
+
+
+      
+
+
+

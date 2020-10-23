@@ -1,0 +1,94 @@
+#######################################################............ Network ..........######################################################################################################
+        # Network..............
+
+Networking:
+        --> Interconnected collection of multiple Autonomous computers.
+        --> When two or more computers are connected together for changing information they form a network.
+        --> Networks are effective way to share the information :- Mail.
+
+        # It will connect between one machine to another machine and it will share data between one machine to another machine.
+    
+IP Address and Subnetting:
+    In Network Basically we have a two type of IP-address.
+        IPv4 (Internet Protocol version 4):
+                --> Most of the real time senarios we can use IPv4.
+                --> It contains 32-bits address.
+                --> IPv4 theree are classified in to 5 classes. Based on number of class we will get range of it.
+                --> As of now our VPC is also supported IPv4 protocol.
+
+          #    CLASS                IP-ADDRESS            DEFAULT SUBNET MASK
+              Class A                 0-126                 255.0.0.0
+                (Large network used for Organisation level):
+              Class B                 128-191               255.255.0.0
+                (Middle range network like billings small resources):
+              Class C                 192-223               255.255.255.0
+                (Use for local network single room or within the home):
+              Class D                 224-239                   N/A
+              Class E                 240-255                   N/A
+
+ --> 127.0.0.0 -127.255.255.255 is a loop back address used for testing purpose. within your local machine.
+
+                --> Based on subnet mask we will get number of Ip- Address for that specific network.
+                --> In default subnet mask 1st digit is network id and then next three digits are subnet id's or host id's.
+                        --> Network Id is never modified and then next three digits are we can modified.
+                        # Network Id is a static Id. And remaining three id's are Host id's and it is dynamically changed.
+                        # Based on classes we can choose number of digits have Network Id's and then remaining have host id's.
+                 # Based on classes we will number of Id's even you define CIDR block also.
+                         CIDR: --> Crossless Inter Domain Routing. 
+                        --> Based on this CIDR block we will get a number of IP address and we can allocated number of instances.
+                        --> Again this CIDR block also depend on class 
+                        for example: 
+                                        192.168.0.0.0/16 means upto 65,000 ip address.--> Network Range
+
+        # By default Amazon provided Class A type of network.
+               But before cloud based on your requirment we can choose number of Ip address based on classes.
+        IPv6 (Internet Protocol version 6):
+                --> This is the latest version we can use IPv6.
+                --> But still in real time senarios we can use IPv4.
+                --> It contains 128-bits address.
+                --> This type of IP-address look like mac Ip address.
+
+        
+subnet: Main use of this subnet is to improve this network performance.
+        # for example we have large network we need divide that large network into small network which is called subnet.
+        
+        --> A subnet is logical subdivision of an IP address.
+        --> The process of dividing a network into two or more networks is called networking.
+        --> The main purpose of subnetting is improve network performance and security is another benefit of subnetting.
+        --> Even that multiple networks is also created under one main network.
+        --> To understanding subnetting, we do need some basic knowledge such as subnet mask, networkId, Hostid, and broadcast id.
+                --> for example one network is divided into two subnets one is for private network anthoer one is for public network. based on resources we can arrange it.
+                --> for example we can choose main network either we can deploy only private network or public network.
+                # Based on n number of networks we can divide.
+        
+   
+   SUBNET:      1     2    4   8    16   32   64   128  256    
+   HOST:       256   128   64   32  16   8     4    2    1
+   SUBNETMASK: /24   /25  /26  /27  /28  /29  /30   /31  /32
+
+   --> Based on subnet maskes we get number of hosts.
+   --> By using global Ip address global calculator we can find list of ip address. or else by using formula also we can find list of ip address.
+                # 2power n -2           n= 32-CIDR block range (16) 
+        --> 32-bits because this network range supported IPv4 version.
+
+
+
+Traditional Way:
+        --> In that network Ip address 2 address are allocated to network and Broadcast.
+                --> As per traditional network policy. 1st Ip-address are allocated to network address and last ip-address are allcoated to broadcast policy.remaining are ready to use address.
+AWS services senario:
+        --> The first four IP address and the last IP address in each subnet CIDR block are not available for you to use, and cannot be assigned to an instance.
+                for example: In a subnet with CIDR block 10.0.0.0/24 and we will get total 256 IP address.
+                             10.0.0.0: Network address.
+                             10.0.0.1: Reserved by AWS for the VPC router.
+                             10.0.0.2: Reserved by AWS. The IP-address of the DNS server is always the base of the VPC netowrk range.
+                             10.0.0.3: Reserved by AWS for future use.
+                             10.0.0.255: Netowrk Board cast address. we do not support Baordcast in a VPC therefore we reserve this address.
+                --> After creating subnets we can choose those subnets are used for public or private.
+                # main Network Ip address means VPC in our cloud senario.
+
+Private Network: We can't access through outside public. which can access priavtely. (or) we are unable to access one location to another location. 
+Public Network: we can access throughout the internet. 
+
+
+

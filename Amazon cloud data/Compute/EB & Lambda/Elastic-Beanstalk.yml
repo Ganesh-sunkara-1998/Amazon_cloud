@@ -1,0 +1,44 @@
+############################################............... Elastic Bean stalk ....................####################################################
+
+Elastic Bean Stalk:
+
+  . AWS Elastic Bean Stalk is an easy-to-use service for deploying and scaling web applications.
+  . You can simply upload your code  and Elastic Bean stalk automatically handles the deployment, for capacity provisioning, load balancing, autosacaling to application health monitoring.
+  . There is no additional charge for Elastic Bean stalk - you pay only for the AWS resources needed to store and run your Applications. 
+
+--> Even Ec2 is also use for depolyment Generaly you will create manually your instance and also attach your load balancer and that use that related resources.
+--> Elastic Beanstalk is also provided those resources like 
+      . EC2 instance resources
+      . Elastic Load Balancers
+      . Cloudwatch
+      . Autoscaling
+      . ElasticIp
+      . ElasticBlock storage 
+--> This service are manage automatically. It means it will provided all services in one location.
+
+  . Elastic Beanstalk supports applications developed in Go, Java, .NET, Node.js, PHP, Python, and Ruby.
+  . To use Elastic Beanstalk, you create an application, upload an application version in the form of an application source bundle (for example, a Java .war file) to Elastic Beanstalk, and then provide some information about the application.
+  . Elastic Beanstalk automatically launches an environment and creates and configures the AWS resources needed to run your code.
+  . After your environment is launched, you can then manage your environment and deploy new application versions.
+
+      "
+                                                   Update version
+                                       <--------------------------------------------   
+                                       |                                           |
+            Create Application --> Upload version --> Launch Environment --> Manage Environment
+                                       |                                            |
+                                       --------------------------------------------->
+                                                  Deploy Version              
+                                                                                                "
+  
+  . By default Elastic BeanStalk supported either Zip format or War type of format.
+  # Elastic bean Stalk Is provided Platform as a Service.
+    These service have only three steps 
+        . Select a platform
+        . Upload your Application
+        . Run it
+  # Compute >> Elastic Bean Stack >> Create New Application >> 
+    For Sample Application
+    # Compute >> Get started >> file the required things
+
+    Generally This Beanstalk used for Dev/Test Environment.
